@@ -17,8 +17,8 @@ class MiddlewareResolver
         }
         if (is_string($handler)) {
             return function ($request, $next) use ($handler) {
-                $handler = new $handler;
-                return $handler($request, $next);
+                $object = new $handler;
+                return $object($request, $next);
             };
         }
         return $handler;

@@ -4,12 +4,16 @@
 namespace App\Http\Middleware;
 
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class TimerMiddleware
 {
     public function __invoke(ServerRequestInterface $request, callable $nextAction)
     {
+        /**
+         * @var ResponseInterface $response
+         */
         $start = microtime(true);
 
         $response = $nextAction($request);

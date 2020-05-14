@@ -13,11 +13,6 @@ class Next
     private SplQueue $queue;
     private $defaultAction;
 
-    /**
-     * Next constructor.
-     * @param SplQueue $queue
-     * @param $defaultAction
-     */
     public function __construct(SplQueue $queue, callable $defaultAction)
     {
         $this->queue = $queue;

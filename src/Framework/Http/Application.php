@@ -11,7 +11,7 @@ class Application extends Pipeline
 {
     private $defaultAction;
 
-    public function __construct($defaultAction)
+    public function __construct(callable $defaultAction)
     {
         $this->defaultAction = $defaultAction;
         parent::__construct();
