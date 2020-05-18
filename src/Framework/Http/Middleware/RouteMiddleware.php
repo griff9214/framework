@@ -4,12 +4,14 @@
 namespace Framework\Http\Middleware;
 
 
-use Framework\Http\MiddlewareResolver;
 use Framework\Http\Router\Exceptions\RequestNotMatchedException;
 use Framework\Http\Router\RouterInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class RouteMiddleware
+class RouteMiddleware implements MiddlewareInterface
 {
     const REQUEST_ROUTE_PARAM = "resultRoute";
     private RouterInterface $router;
@@ -19,14 +21,13 @@ class RouteMiddleware
         $this->router = $router;
     }
 
-    public function __invoke(ServerRequestInterface $request, callable $next)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         try {
             $resultRoute = $this->router->match($request);
-            return $next($request->withAttribute(self::REQUEST_ROUTE_PARAM, $resultRoute));
+            return $handler->handle($request->withAttribute(self::REQUEST_ROUTE_PARAM, $resultRoute));
         } catch (RequestNotMatchedException $e){
-            return $next($request);
+            return $handler->handle($request);
         }
     }
-
 }

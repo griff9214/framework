@@ -16,15 +16,15 @@ class Pipeline
         $this->queue = new \SplQueue();
     }
 
-    public function pipe(callable $action)
+    public function pipe($action)
     {
         $this->queue->enqueue($action);
     }
 
-    public function __invoke(ServerRequestInterface $request, callable $defaultAction) : ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $defaultAction) : ResponseInterface
     {
         $switcher = new Next(clone $this->queue, $defaultAction);
-        return $switcher($request);
+        return $switcher($request, $response);
     }
 
 }

@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class AuthMiddleware implements MiddlewareInterface
+class BasicAuthMiddleware
 {
     const ATTRIBUTE = "user";
     private array $users = [];
@@ -20,7 +20,7 @@ class AuthMiddleware implements MiddlewareInterface
         $this->users = $users;
     }
 
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, callable $next): ResponseInterface
     {
         $username = $request->getServerParams()["PHP_AUTH_USER"] ?? null;
         $password = $request->getServerParams()["PHP_AUTH_PW"] ?? null;
@@ -28,7 +28,7 @@ class AuthMiddleware implements MiddlewareInterface
             foreach ($this->users as $login => $pass) {
                 if ($username === $login && $password === $pass) {
                     $request = $request->withAttribute(self::ATTRIBUTE, $username);
-                    return $handler->handle($request);
+                    return $next($request);
                 }
             }
         }

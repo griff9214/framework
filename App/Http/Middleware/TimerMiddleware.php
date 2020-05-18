@@ -6,17 +6,19 @@ namespace App\Http\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class TimerMiddleware
+class TimerMiddleware implements MiddlewareInterface
 {
-    public function __invoke(ServerRequestInterface $request, callable $nextAction)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         /**
          * @var ResponseInterface $response
          */
         $start = microtime(true);
 
-        $response = $nextAction($request);
+        $response = $handler->handle($request);
 
         $stop = microtime(true);
         return $response->withHeader("Timer", $stop - $start);

@@ -7,20 +7,24 @@ namespace App\Http\Middleware;
 use Framework\Http\Middleware\RouteMiddleware;
 use Framework\Http\Router\RouteInterface;
 use Laminas\Diactoros\Response\HtmlResponse;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class BlogUnavailable
+class BlogUnavailable implements MiddlewareInterface
 {
-    public function __invoke(ServerRequestInterface $request, callable $next)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         /**
          * @var RouteInterface $route
          */
-        $route = $request->getAttribute(RouteMiddleware::REQUEST_ROUTE_PARAM);
-        if ($route->getName() === "blog-iindex"){
-            return new HtmlResponse("Blog is not available at this moment", 403);
+        if (!empty($route = $request->getAttribute(RouteMiddleware::REQUEST_ROUTE_PARAM))) {
+            if ($route->getName() === "blog-index") {
+                return new HtmlResponse("Blog is not available at this moment", 403);
+            }
         }
-        return $next($request);
+        return $handler->handle($request);
     }
 
 }

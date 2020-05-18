@@ -5,13 +5,14 @@ namespace App\Http\Middleware;
 
 
 use Laminas\Diactoros\Response\HtmlResponse;
-use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class NotFoundHandler
+class NotFoundHandler implements RequestHandlerInterface
 {
-    public function __invoke(RequestInterface $request)
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return new HtmlResponse("Page {$request->getUri()->getPath()} not found", 404);
     }
-
 }
