@@ -17,16 +17,8 @@ class PipelineTest extends TestCase
     public function testPipe()
     {
         $pipeline = new Pipeline();
-        $pipeline->pipe(
-            function (ServerRequestInterface $request, ResponseInterface $response, callable $next) {
-                return (new MiddleWare1())($request, $next);
-            }
-        );
-        $pipeline->pipe(
-            function (ServerRequestInterface $request, ResponseInterface $response, callable $next) {
-                return (new MiddleWare2())($request, $next);
-            }
-        );
+        $pipeline->pipe(new MiddleWare1());
+        $pipeline->pipe(new MiddleWare2());
         $request = new ServerRequest();
         $response1 = new Response\EmptyResponse();
         $response = $pipeline($request, $response1, new Last());
@@ -39,7 +31,7 @@ class PipelineTest extends TestCase
 
 class MiddleWare1
 {
-    public function __invoke(ServerRequestInterface $request, callable $next): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
         return $next($request->withAttribute("MiddleWare1", 1));
     }
@@ -47,7 +39,7 @@ class MiddleWare1
 
 class MiddleWare2
 {
-    public function __invoke(ServerRequestInterface $request, callable $next): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
         return $next($request->withAttribute("MiddleWare2", 2));
     }

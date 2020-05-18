@@ -3,7 +3,7 @@
 
 use App\Http\Middleware\BasicAuthMiddleware;
 use App\Http\Middleware\BlogUnavailable;
-use App\Http\Middleware\NotFoundHandler;
+use App\Http\Action\NotFoundHandler;
 use App\Http\Middleware\TimerMiddleware;
 use Framework\Http\Application;
 use Framework\Http\Middleware\DispatchMiddleware;
@@ -45,9 +45,9 @@ $response = new Response();
 $app = new Application(new NotFoundHandler());
 //$app->pipe(new ErrorHandlerMiddleware($params['debug']));
 //$app->pipe(DeveloperMiddleware::class);
-$app->pipe(TimerMiddleware::class);
+//$app->pipe(TimerMiddleware::class);
 $app->pipe(new RouteMiddleware($router));
-$app->pipe(BlogUnavailable::class);
+//$app->pipe(BlogUnavailable::class);
 $app->pipe(DispatchMiddleware::class);
 $response = $app->run($request, $response);
 

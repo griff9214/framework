@@ -31,12 +31,12 @@ class MiddlewareResolver
             };
         }
 
-        if ($handler instanceof RequestHandlerInterface) {
-            return function (ServerRequestInterface $request, ResponseInterface $response) use ($handler) {
-                return $handler->handle($request);
-            };
-        }
-
+//        if ($handler instanceof RequestHandlerInterface) {
+//            return function (ServerRequestInterface $request, ResponseInterface $response) use ($handler) {
+//                return $handler->handle($request);
+//            };
+//        }
+//
         if (is_object($handler)){
             $reflection = new \ReflectionClass($handler);
             if ($reflection->hasMethod("__invoke")){
