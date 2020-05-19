@@ -8,7 +8,8 @@ use Framework\Http\Pipeline;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
+use ReflectionFunction;
+use function PHPUnit\Framework\isInstanceOf;
 
 class MiddlewareResolver
 {
@@ -31,22 +32,32 @@ class MiddlewareResolver
             };
         }
 
-//        if ($handler instanceof RequestHandlerInterface) {
-//            return function (ServerRequestInterface $request, ResponseInterface $response) use ($handler) {
-//                return $handler->handle($request);
-//            };
-//        }
-//
-        if (is_object($handler)){
+        if ($handler instanceof RequestHandlerInterface) {
+            return function (ServerRequestInterface $request, ResponseInterface $response) use ($handler) {
+                return $handler->handle($request);
+            };
+        }
+
+        if (is_object($handler) && !($handler instanceof \Closure)) {
             $reflection = new \ReflectionClass($handler);
-            if ($reflection->hasMethod("__invoke")){
+            if ($reflection->hasMethod("__invoke")) {
                 $method = $reflection->getMethod("__invoke");
                 $params = $method->getParameters();
-                if (count($params) == 2 && $params[1]->isCallable()){
-                    return function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($handler){
+                if (count($params) == 2 && $params[1]->isCallable()) {
+                    return function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($handler) {
                         return $handler($request, $next);
                     };
                 }
+            }
+            return $handler;
+        }
+
+        if (is_callable($handler)) {
+            $CReflection = new ReflectionFunction($handler);
+            if ($CReflection->getNumberOfParameters() === 2){
+                return function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($handler) {
+                    return $handler($request, $next);
+                };
             }
             return $handler;
         }
