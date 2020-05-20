@@ -8,17 +8,17 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class HandlerWrapper implements RequestHandlerInterface
+class HandlerWrapper
 {
-    private $handler;
+    private RequestHandlerInterface $handler;
 
-    public function __construct(callable $handler)
+    public function __construct(RequestHandlerInterface $handler)
     {
         $this->handler = $handler;
     }
 
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
-        return ($this->handler)($request);
+        return $this->handler->handle($request);
     }
 }

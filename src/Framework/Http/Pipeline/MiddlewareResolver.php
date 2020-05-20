@@ -4,69 +4,51 @@
 namespace Framework\Http\Pipeline;
 
 
-use Framework\Http\Pipeline;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Laminas\Stratigility\Middleware\CallableMiddlewareDecorator;
+use Laminas\Stratigility\Middleware\DoublePassMiddlewareDecorator;
+use Laminas\Stratigility\Middleware\RequestHandlerMiddleware;
+use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use ReflectionFunction;
-use function PHPUnit\Framework\isInstanceOf;
 
 class MiddlewareResolver
 {
-    public static function resolve($handler)
+    public static function resolve($handler): MiddlewareInterface
     {
         if (is_array($handler)) {
             return self::createPipe($handler);
         }
         if (is_string($handler)) {
-            return function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($handler) {
-                $middleware = self::resolve(new $handler);
-                return $middleware($request, $response, $next);
-            };
+            return self::resolve(new $handler);
         }
 
 
         if ($handler instanceof MiddlewareInterface) {
-            return function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($handler) {
-                return $handler->process($request, new HandlerWrapper($next));
-            };
+            return $handler;
         }
 
         if ($handler instanceof RequestHandlerInterface) {
-            return function (ServerRequestInterface $request, ResponseInterface $response) use ($handler) {
-                return $handler->handle($request);
-            };
+            return new RequestHandlerMiddleware($handler);
         }
 
         if (is_object($handler) && !($handler instanceof \Closure)) {
-            $reflection = new \ReflectionClass($handler);
-            if ($reflection->hasMethod("__invoke")) {
-                $method = $reflection->getMethod("__invoke");
-                $params = $method->getParameters();
-                if (count($params) == 2 && $params[1]->isCallable()) {
-                    return function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($handler) {
-                        return $handler($request, $next);
-                    };
-                }
-            }
-            return $handler;
+            return new ObjectMiddlewareWrapper($handler);
         }
 
         if (is_callable($handler)) {
             $CReflection = new ReflectionFunction($handler);
-            if ($CReflection->getNumberOfParameters() === 2){
-                return function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($handler) {
-                    return $handler($request, $next);
-                };
+            if ($CReflection->getNumberOfParameters() === 2) {
+                return new CallableMiddlewareDecorator($handler);
+            } elseif ($CReflection->getNumberOfParameters() === 3) {
+                return new DoublePassMiddlewareDecorator($handler);
             }
-            return $handler;
         }
-
     }
 
-    private static function createPipe($handler): Pipeline\Pipeline
+    private static function createPipe($handler): MiddlewarePipe
     {
-        $pipe = new Pipeline\Pipeline();
+        $pipe = new MiddlewarePipe();
         foreach ($handler as $action) {
             $pipe->pipe(self::resolve($action));
         }
