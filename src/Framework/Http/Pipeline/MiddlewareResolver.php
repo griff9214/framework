@@ -4,7 +4,6 @@
 namespace Framework\Http\Pipeline;
 
 
-use Laminas\Stratigility\Middleware\CallableMiddlewareDecorator;
 use Laminas\Stratigility\Middleware\DoublePassMiddlewareDecorator;
 use Laminas\Stratigility\Middleware\RequestHandlerMiddleware;
 use Laminas\Stratigility\MiddlewarePipe;
@@ -33,17 +32,24 @@ class MiddlewareResolver
         }
 
         if (is_object($handler) && !($handler instanceof \Closure)) {
-            return new ObjectMiddlewareWrapper($handler);
+            $reflection = new \ReflectionObject($handler);
+            if ($reflection->hasMethod("__invoke")) {
+                $method = $reflection->getMethod("__invoke");
+                $closure = $method->getClosure($handler);
+                return self::resolve($closure);
+            }
         }
 
         if (is_callable($handler)) {
             $CReflection = new ReflectionFunction($handler);
-            if ($CReflection->getNumberOfParameters() === 2) {
-                return new CallableMiddlewareDecorator($handler);
-            } elseif ($CReflection->getNumberOfParameters() === 3) {
+            $params = $CReflection->getParameters();
+            if (count($params) === 3 && $params[2]->isCallable()) {
                 return new DoublePassMiddlewareDecorator($handler);
+            } elseif (count($params) === 2 && $params[1]->isCallable()) {
+                return new CallableMiddlewareWrapper($handler);
             }
         }
+        //TODO: return UnknownMiddlewareException
     }
 
     private static function createPipe($handler): MiddlewarePipe
@@ -54,4 +60,5 @@ class MiddlewareResolver
         }
         return $pipe;
     }
+
 }

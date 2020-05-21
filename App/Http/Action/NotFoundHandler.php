@@ -15,9 +15,4 @@ class NotFoundHandler implements RequestHandlerInterface
     {
         return new HtmlResponse("Page {$request->getUri()->getPath()} not found", 404);
     }
-
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
-    {
-        return new HtmlResponse("Page {$request->getUri()->getPath()} not found", 404);
-    }
 }
