@@ -13,19 +13,21 @@ use Framework\Http\Router\RouteInterface;
 use Framework\Http\Router\RouterInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class AuraRouterAdapter extends RouterContainer implements RouterInterface
+class AuraRouterAdapter implements RouterInterface
 {
-    protected function routeFactory() : AuraRouteAdapter
+    private RouterContainer $router;
+
+    public function __construct(RouterContainer $router)
     {
-        return new AuraRouteAdapter();
+        $this->router = $router;
     }
 
     public function match(ServerRequestInterface &$request): RouteInterface
     {
-        $matcher = $this->getMatcher();
+        $matcher = $this->router->getMatcher();
         if (($route = $matcher->match($request)) != null) {
             $request = $this->bindParams($request, $route->attributes);
-            return $route;
+            return new AuraRouteAdapter($route);
         }
         throw new RequestNotMatchedException($request);
     }
@@ -33,7 +35,7 @@ class AuraRouterAdapter extends RouterContainer implements RouterInterface
     public function generate(string $name, array $params = []): ?string
     {
         try {
-            return $this->getGenerator()->generate($name, $params);
+            return $this->router->getGenerator()->generate($name, $params);
         } catch (Exception\RouteNotFound $e){
             throw new RouteNotFoundException($name, $params, $e);
         }

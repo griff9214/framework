@@ -19,7 +19,7 @@ class CallableWrapper implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return call_user_func_array($this->function, [$request]);
+        return ($this->function)($request);
     }
 
 }

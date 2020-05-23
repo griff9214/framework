@@ -22,7 +22,6 @@ class MiddlewareResolver
             return self::resolve(new $handler);
         }
 
-
         if ($handler instanceof MiddlewareInterface) {
             return $handler;
         }

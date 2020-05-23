@@ -4,6 +4,7 @@
 namespace Framework\Http;
 
 
+use Aura\Router\RouterContainer;
 use Framework\Http\Router\AuraAdapter\AuraRouterAdapter;
 use Framework\Http\Router\Exceptions\RequestNotMatchedException;
 use Framework\Http\Router\Router;
@@ -17,10 +18,11 @@ class AuraRouterAdapterTest extends TestCase
 {
     public function testCorrectMethod()
     {
-        $router = new AuraRouterAdapter();
-        $routes = $router->getMap();
+        $aura = new RouterContainer();
+        $routes = $aura->getMap();
         $routes->get($nameGet = "blog-get", "/blog", $actionGet = "get-blog");
         $routes->post($namePost = "blog-post", "/blog", $actionPost = "post-blog");
+        $router = new AuraRouterAdapter($aura);
 
 
         $requestGet = $this->buildRequest("/blog", "GET");
@@ -36,11 +38,12 @@ class AuraRouterAdapterTest extends TestCase
 
     public function testGenerate()
     {
-        $router = new AuraRouterAdapter();
-        $routes = $router->getMap();
+        $aura = new RouterContainer();
+        $routes = $aura->getMap();
         $routes->post("blog-post", "/blog/{id}/{slug}", $action = function () {
             echo "hello";
         })->tokens(["id" => "\d+", "slug" => "[a-z]{5}"]);
+        $router = new AuraRouterAdapter($aura);
 
         self::assertEquals("/blog/20/abcde", $router->generate("blog-post", ["id" => "20", "slug" => "abcde"]));
     }

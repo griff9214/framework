@@ -7,26 +7,33 @@ namespace Framework\Http\Router\AuraAdapter;
 use Aura\Router\Route;
 use Framework\Http\Router\RouteInterface;
 
-class AuraRouteAdapter extends Route implements RouteInterface
+class AuraRouteAdapter implements RouteInterface
 {
+
+    private Route $route;
+
+    public function __construct(Route $route)
+    {
+        $this->route = $route;
+    }
 
     public function getHandler()
     {
-        return $this->handler;
+        return $this->route->handler;
     }
 
     public function getName(): string
     {
-        return $this->name;
+        return $this->route->name;
     }
 
     public function getPattern(): string
     {
-        return $this->path;
+        return $this->route->path;
     }
 
     public function getMethods(): array
     {
-        return $this->allows;
+        return $this->route->allows;
     }
 }
