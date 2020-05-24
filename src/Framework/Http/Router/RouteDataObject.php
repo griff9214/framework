@@ -9,7 +9,7 @@ class RouteDataObject
 
     public string $name;
     public string $path;
-    private array $methods;
+    public array $methods;
     public $handler;
     public array $params;
 

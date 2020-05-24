@@ -50,11 +50,11 @@ class AuraRouterAdapter implements RouterInterface
         return $request;
     }
 
-    public function addRoute(string $name, string $path, array $methods, $handler, array $params)
+    public function addRoute(RouteDataObject $routeData)
     {
         $map = $this->router->getMap();
-        $route = $map->route($name, $path, $handler)->allows($methods);
-        foreach ($params as $paramKey => $paramValue) {
+        $route = $map->route($routeData->name, $routeData->path, $routeData->handler)->allows($routeData->methods);
+        foreach ($routeData->params as $paramKey => $paramValue) {
             if(!is_array($paramValue)){
                 throw new \LogicException("Route parameter value must be an array");
             }

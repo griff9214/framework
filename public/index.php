@@ -25,57 +25,15 @@ chdir(dirname(__DIR__));
 
 require_once "vendor/autoload.php";
 $c = new Container();
-$c->set("params", [
-    'users' => ['admin' => 'admin1'],
-    'debug' => true
-]);
-$c->set(RouterContainer::class, function ($c){
-    return new RouterContainer();
-});
-$c->set(Router::class, function (Container $c){
-    return new AuraRouterAdapter($c->get(RouterContainer::class));
-});
-$c->set(RouteMiddleware::class, function (Container $c){
-    return new RouteMiddleware($c->get(Router::class));
-});
-$c->set(Application::class, function (Container $c){
-    return new Application(
-        $c->get(Router::class),
-        $c->get(MiddlewarePipe::class),
-        new Response(),
-        new NotFoundHandler());
-});
-$c->set(MiddlewarePipe::class, function ($c){
-    return new MiddlewarePipe();
-});
+$c->set("params", require_once "config/parameters.php");
+require_once "config/definitions.php";
 
 $app = $c->get(Application::class);
-
-$app->get("cabinet-index", "/cabinet$", [
-    new BasicAuthMiddleware($c->get("params")['users']),
-    App\Http\Action\Cabinet\IndexAction::class,
-]);
-$app->get("cabinet-edit", "/cabinet/edit$", [
-    new AuthMiddleware($c->get("params")['users']),
-    App\Http\Action\Cabinet\EditAction::class
-]);
-$app->get("blog-index", "/blog$", App\Http\Action\Blog\IndexAction::class);
-$app->get("blog-post", "/blog/{id}/{slug}$", App\Http\Action\Blog\PostAction::class, ['tokens'=> ["id" => "\d+", "slug" => "[a-z]{5}"]]);
-$app->get("index", "^/$", App\Http\Action\HelloAction::class);
-
-
-//$app->pipe(new ErrorHandlerMiddleware($container->get("params")['debug']));
-$app->pipe(DeveloperMiddleware::class);
-$app->pipe(TimerMiddleware::class);
-$app->pipe($c->get(RouteMiddleware::class));
-//$app->pipe(BlogUnavailable::class);
-$app->pipe(DispatchMiddleware::class);
-
+require_once "config/pipeline.php";
+require_once "config/routes.php";
 
 $request = ServerRequestFactory::fromGlobals();
 $responsePrototype = $app->run($request);
-
-
 
 $emitter = new SapiEmitter();
 $emitter->emit($responsePrototype);
