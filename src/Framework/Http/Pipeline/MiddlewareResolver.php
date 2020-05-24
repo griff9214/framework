@@ -4,22 +4,32 @@
 namespace Framework\Http\Pipeline;
 
 
+use Framework\Container\Container;
 use Laminas\Stratigility\Middleware\DoublePassMiddlewareDecorator;
 use Laminas\Stratigility\Middleware\RequestHandlerMiddleware;
 use Laminas\Stratigility\MiddlewarePipe;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use ReflectionFunction;
 
 class MiddlewareResolver
 {
-    public static function resolve($handler): MiddlewareInterface
+
+    private ContainerInterface $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
+    public function resolve($handler): MiddlewareInterface
     {
         if (is_array($handler)) {
-            return self::createPipe($handler);
+            return $this->createPipe($handler);
         }
-        if (is_string($handler)) {
-            return self::resolve(new $handler);
+        if (is_string($handler) && $this->container->has($handler)) {
+            return $this->resolve($this->container->get($handler));
         }
 
         if ($handler instanceof MiddlewareInterface) {
@@ -51,7 +61,7 @@ class MiddlewareResolver
         //TODO: return UnknownMiddlewareException
     }
 
-    private static function createPipe($handler): MiddlewarePipe
+    private function createPipe($handler): MiddlewarePipe
     {
         $pipe = new MiddlewarePipe();
         foreach ($handler as $action) {

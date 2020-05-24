@@ -3,9 +3,6 @@
 
 namespace Framework\Http\Router;
 
-
-use Framework\Http\Router\Route;
-
 class RouterCollection
 {
     private array $routes = [];
@@ -34,6 +31,11 @@ class RouterCollection
     public function getRoutes() : array
     {
         return $this->routes;
+    }
+
+    public function addRoute(RouteDataObject $routeData)
+    {
+        $this->routes[] = new Route($routeData->name, $routeData->path, $routeData->handler, $routeData->methods, $routeData->params['tokens']);
     }
 
 }

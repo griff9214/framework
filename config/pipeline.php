@@ -14,6 +14,6 @@ use Framework\Http\Middleware\RouteMiddleware;
 //$app->pipe(new ErrorHandlerMiddleware($container->get("params")['debug']));
 $app->pipe(DeveloperMiddleware::class);
 $app->pipe(TimerMiddleware::class);
-$app->pipe($c->get(RouteMiddleware::class));
+$app->pipe(RouteMiddleware::class);
 //$app->pipe(BlogUnavailable::class);
 $app->pipe(DispatchMiddleware::class);

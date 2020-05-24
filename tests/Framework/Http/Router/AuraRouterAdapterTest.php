@@ -6,13 +6,10 @@ namespace Framework\Http;
 
 use Aura\Router\RouterContainer;
 use Framework\Http\Router\AuraAdapter\AuraRouterAdapter;
-use Framework\Http\Router\Exceptions\RequestNotMatchedException;
-use Framework\Http\Router\Router;
-use Framework\Http\Router\RouterCollection;
-use http\Exception\InvalidArgumentException;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Uri;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestInterface;
 
 class AuraRouterAdapterTest extends TestCase
 {
@@ -85,7 +82,7 @@ class AuraRouterAdapterTest extends TestCase
 //        $router->match($request);
 //    }
 
-    private function buildRequest(string $uri, string $method): \Psr\Http\Message\RequestInterface
+    private function buildRequest(string $uri, string $method): RequestInterface
     {
         return (new ServerRequest())->withUri(new Uri($uri))->withMethod($method);
     }

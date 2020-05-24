@@ -19,18 +19,20 @@ class Application
     private MiddlewarePipe $middlewarePipe;
     private ResponseInterface $responsePrototype;
     private RouterInterface $router;
+    private MiddlewareResolver $resolver;
 
-    public function __construct(RouterInterface $router, MiddlewarePipe $middlewarePipe, ResponseInterface $responsePrototype, RequestHandlerInterface $defaultAction)
+    public function __construct(RouterInterface $router, MiddlewarePipe $middlewarePipe, MiddlewareResolver $resolver, ResponseInterface $responsePrototype, RequestHandlerInterface $defaultAction)
     {
         $this->defaultAction = $defaultAction;
         $this->middlewarePipe = $middlewarePipe;
         $this->responsePrototype = $responsePrototype;
         $this->router = $router;
+        $this->resolver = $resolver;
     }
 
     public function pipe($handler)
     {
-        $handler = MiddlewareResolver::resolve($handler);
+        $handler = $this->resolver->resolve($handler);
         $this->middlewarePipe->pipe($handler);
     }
 

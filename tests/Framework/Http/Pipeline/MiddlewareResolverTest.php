@@ -4,8 +4,8 @@
 namespace Framework\Pipeline;
 
 
+use Tests\Framework\Http\DummyContainer;
 use Framework\Http\Pipeline\MiddlewareResolver;
-use Framework\Http\Pipeline\Resolver;
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ServerRequest;
 use PHPUnit\Framework\TestCase;
@@ -14,7 +14,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class ApplicationTest extends TestCase
+class MiddlewareResolverTest extends TestCase
 {
     /**
      * @dataProvider getHandlers
@@ -22,7 +22,8 @@ class ApplicationTest extends TestCase
      */
     public function testDirect($handler)
     {
-        $middleware = MiddlewareResolver::resolve($handler);
+        $resolver = new MiddlewareResolver(new DummyContainer());
+        $middleware = $resolver->resolve($handler);
         $response = $middleware->process(
             (new ServerRequest())->withAttribute('attribute', $value = 'value'),
             new NotFoundHandler()
@@ -36,7 +37,8 @@ class ApplicationTest extends TestCase
      */
     public function testNext($handler)
     {
-        $middleware = MiddlewareResolver::resolve($handler);
+        $resolver = new MiddlewareResolver(new DummyContainer());
+        $middleware = $resolver->resolve($handler);
         $response = $middleware->process(
             (new ServerRequest())->withAttribute('next', true),
             new NotFoundHandler()
@@ -50,7 +52,8 @@ class ApplicationTest extends TestCase
             new DummyMiddleware(),
             new CallableMiddleware(),
         ];
-        $middleware = MiddlewareResolver::resolve($array);
+        $resolver = new MiddlewareResolver(new DummyContainer());
+        $middleware = $resolver->resolve($array);
         $response = $middleware->process(
             (new ServerRequest())->withAttribute('attribute', $value = 'value'),
             new NotFoundHandler()

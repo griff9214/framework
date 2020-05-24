@@ -48,4 +48,8 @@ class Router implements RouterInterface
         return $request;
     }
 
+    public function addRoute(RouteDataObject $routeData)
+    {
+        $this->routerCollection->addRoute($routeData);
+    }
 }

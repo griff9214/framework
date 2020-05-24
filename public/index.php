@@ -26,7 +26,7 @@ chdir(dirname(__DIR__));
 require_once "vendor/autoload.php";
 $c = new Container();
 $c->set("params", require_once "config/parameters.php");
-require_once "config/definitions.php";
+require_once "config/dependencies.php";
 
 $app = $c->get(Application::class);
 require_once "config/pipeline.php";
