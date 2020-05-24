@@ -12,11 +12,5 @@ interface RouterInterface
 
     public function bindParams(ServerRequestInterface $request, array $matches): ServerRequestInterface;
 
-    public function get(string $name, string $path, $handler, array $params);
-    public function post(string $name, string $path, $handler, array $params);
-    public function put(string $name, string $path, $handler, array $params);
-    public function patch(string $name, string $path, $handler, array $params);
-    public function delete(string $name, string $path, $handler, array $params);
-    public function update(string $name, string $path, $handler, array $params);
-    public function any(string $name, string $path, $handler, array $params);
+    public function addRoute(RouteDataObject $routeData);
 }

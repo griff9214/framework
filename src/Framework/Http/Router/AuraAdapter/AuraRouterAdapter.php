@@ -9,6 +9,7 @@ use Aura\Router\Route;
 use Aura\Router\RouterContainer;
 use Framework\Http\Router\Exceptions\RequestNotMatchedException;
 use Framework\Http\Router\Exceptions\RouteNotFoundException;
+use Framework\Http\Router\RouteDataObject;
 use Framework\Http\Router\RouteInterface;
 use Framework\Http\Router\RouterInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -49,7 +50,7 @@ class AuraRouterAdapter implements RouterInterface
         return $request;
     }
 
-    protected function route(string $name, string $path, array $methods, $handler, array $params)
+    public function addRoute(string $name, string $path, array $methods, $handler, array $params)
     {
         $map = $this->router->getMap();
         $route = $map->route($name, $path, $handler)->allows($methods);
@@ -71,40 +72,5 @@ class AuraRouterAdapter implements RouterInterface
                     throw new \LogicException('Route parameter key must tokens/attributes/defaults');
             }
         }
-    }
-
-    public function get(string $name, string $path, $handler, array $params)
-    {
-        $this->route($name, $path, ['GET'], $handler, $params);
-    }
-
-    public function post(string $name, string $path, $handler, array $params)
-    {
-        $this->route($name, $path, ['POST'], $handler, $params);
-    }
-
-    public function put(string $name, string $path, $handler, array $params)
-    {
-        $this->route($name, $path, ['PUT'], $handler, $params);
-    }
-
-    public function patch(string $name, string $path, $handler, array $params)
-    {
-        $this->route($name, $path, ['PATCH'], $handler, $params);
-    }
-
-    public function delete(string $name, string $path, $handler, array $params)
-    {
-        $this->route($name, $path, ['DELETE'], $handler, $params);
-    }
-
-    public function update(string $name, string $path, $handler, array $params)
-    {
-        $this->route($name, $path, ['UPDATE'], $handler, $params);
-    }
-
-    public function any(string $name, string $path, $handler, array $params)
-    {
-        $this->route($name, $path, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'UPDATE'], $handler, $params);
     }
 }

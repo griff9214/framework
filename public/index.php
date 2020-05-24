@@ -49,7 +49,6 @@ $c->set(MiddlewarePipe::class, function ($c){
     return new MiddlewarePipe();
 });
 
-$request = ServerRequestFactory::fromGlobals();
 $app = $c->get(Application::class);
 
 $app->get("cabinet-index", "/cabinet$", [
@@ -71,6 +70,9 @@ $app->pipe(TimerMiddleware::class);
 $app->pipe($c->get(RouteMiddleware::class));
 //$app->pipe(BlogUnavailable::class);
 $app->pipe(DispatchMiddleware::class);
+
+
+$request = ServerRequestFactory::fromGlobals();
 $responsePrototype = $app->run($request);
 
 
