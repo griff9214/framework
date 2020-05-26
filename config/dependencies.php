@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Action\NotFoundHandler;
+use App\Http\Middleware\BasicAuthMiddleware;
 use App\Http\Middleware\ErrorHandlerMiddleware;
 use Aura\Router\RouterContainer;
 use Framework\Http\Application;
@@ -13,17 +14,20 @@ use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Container\ContainerInterface;
 
 return [
-    Router::class => function (ContainerInterface $c) {
-        return new AuraRouterAdapter($c->get(RouterContainer::class));
-    },
     ContainerInterface::class => function (ContainerInterface $c) {
         return $c;
+    },
+    RouterInterface::class => function (ContainerInterface $c) {
+        return $c->get(Router::class);
+    },
+    Router::class => function (ContainerInterface $c) {
+        return new AuraRouterAdapter($c->get(RouterContainer::class));
     },
     ErrorHandlerMiddleware::class => function (ContainerInterface $c) {
         return new ErrorHandlerMiddleware($c->get('params')['debug']);
     },
-    RouterInterface::class => function (ContainerInterface $c) {
-        return $c->get(Router::class);
+    BasicAuthMiddleware::class => function (ContainerInterface $c) {
+        return new BasicAuthMiddleware($c->get("params")['users']);
     },
     Application::class => function (ContainerInterface $c) {
         return new Application(

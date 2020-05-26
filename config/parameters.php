@@ -1,5 +1,5 @@
 <?php
 return [
-    'users' => ['admin' => 'admin1'],
+    'users' => ['admin' => 'admin'],
     'debug' => true
 ];

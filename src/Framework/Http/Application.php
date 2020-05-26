@@ -12,6 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use function Laminas\Stratigility\path;
 
 class Application
 {
@@ -30,10 +31,17 @@ class Application
         $this->resolver = $resolver;
     }
 
-    public function pipe($handler)
+    public function pipe($pathOrHandler, $handler = null)
     {
-        $handler = $this->resolver->resolve($handler);
-        $this->middlewarePipe->pipe($handler);
+        if ($handler) {
+            $handler = $this->resolver->resolve($handler);
+            $this->middlewarePipe->pipe(path($pathOrHandler, $handler));
+        } else {
+            $handler = $pathOrHandler;
+            $handler = $this->resolver->resolve($handler);
+
+            $this->middlewarePipe->pipe($handler);
+        }
     }
 
     public function run(ServerRequestInterface $request)
