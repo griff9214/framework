@@ -11,10 +11,13 @@ class Container implements ContainerInterface
     private array $components;
     private array $preparedComponents;
 
-    public function __construct()
+    public function __construct(array $components)
     {
         $this->components = [];
         $this->preparedComponents = [];
+        foreach ($components as $id => $value) {
+            $this->set($id, $value);
+        }
     }
 
     public function set($id, $value)
@@ -30,9 +33,12 @@ class Container implements ContainerInterface
         if (array_key_exists($id, $this->preparedComponents)) {
             return $this->preparedComponents[$id];
         }
-        if (array_key_exists($id, $this->components) && $this->components[$id] instanceof \Closure) {
+        if (array_key_exists($id, $this->components) && ($this->components[$id] instanceof \Closure)) {
             $this->preparedComponents[$id] = $this->components[$id]($this);
             return $this->preparedComponents[$id];
+        }
+        if (array_key_exists($id, $this->components)) {
+            return $this->components[$id];
         }
         if (class_exists($id)) {
             $reflection = new \ReflectionClass($id);
@@ -44,11 +50,9 @@ class Container implements ContainerInterface
             foreach ($params as $param) {
                 if ($param->isDefaultValueAvailable()) {
                     $valuesToBind[] = $param->getDefaultValue();
-                }
-                elseif ($param->isArray()) {
+                } elseif ($param->isArray()) {
                     $valuesToBind[] = [];
-                }
-                elseif ($param->getClass()) {
+                } elseif ($param->getClass()) {
                     $valuesToBind[] = $this->get($param->getClass()->name);
                 } else {
                     throw new ServiceNotFoundException("Unable to resolve parameter: {$param->getName()}:{$param->getType()->getName()}");
@@ -56,11 +60,11 @@ class Container implements ContainerInterface
             }
             return $this->preparedComponents[$id] = $reflection->newInstanceArgs($valuesToBind);
         }
-        return $this->components[$id];
+        throw new ServiceNotFoundException("Unable to resolve component: $id");
     }
 
     public function has($id)
     {
-        return array_key_exists($id, $this->components) || class_exists($id);
+        return array_key_exists($id, $this->components) || array_key_exists($id, $this->preparedComponents) || class_exists($id);
     }
 }

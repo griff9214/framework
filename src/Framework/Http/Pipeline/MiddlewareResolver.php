@@ -4,7 +4,6 @@
 namespace Framework\Http\Pipeline;
 
 
-use Framework\Container\Container;
 use Laminas\Stratigility\Middleware\DoublePassMiddlewareDecorator;
 use Laminas\Stratigility\Middleware\RequestHandlerMiddleware;
 use Laminas\Stratigility\MiddlewarePipe;

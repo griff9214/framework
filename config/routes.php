@@ -7,10 +7,12 @@ use Framework\Http\Application;
 /**
  * @var Application $app
  */
-$app->get("cabinet-index", "/cabinet$", [
-    new BasicAuthMiddleware($c->get("params")['users']),
-    App\Http\Action\Cabinet\IndexAction::class,
-]);
+if (!empty($c->get("params")['users'])) {
+    $app->get("cabinet-index", "/cabinet$", [
+        new BasicAuthMiddleware($c->get("params")['users']),
+        App\Http\Action\Cabinet\IndexAction::class,
+    ]);
+}
 $app->get("cabinet-edit", "/cabinet/edit$", [
     new AuthMiddleware($c->get("params")['users']),
     App\Http\Action\Cabinet\EditAction::class
