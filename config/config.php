@@ -1,7 +1,9 @@
 <?php
 
-$configs = array_map(function ($el) {
-    return require $el;
-}, glob(__DIR__ . '/autoload/{{,*.}global,{,*.}local}.php', GLOB_BRACE));
+use Laminas\ConfigAggregator\ConfigAggregator;
+use Laminas\ConfigAggregator\PhpFileProvider;
 
-return array_merge_recursive(...$configs);
+$aggregator = new ConfigAggregator([
+    new PhpFileProvider(__DIR__ . "/autoload/{{,*.}global,{,*.}local}.php"),
+]);
+return $aggregator->getMergedConfig();
