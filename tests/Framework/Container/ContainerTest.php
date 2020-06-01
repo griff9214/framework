@@ -10,7 +10,7 @@ class ContainerTest extends TestCase
 {
     public function testSet()
     {
-        $container = new Container();
+        $container = new Container([]);
         $container->set($id = "id", $value = "value");
         $container->set($id2 = "id2", $value2 = function (Container $container){return 1;});
         $container->set($id3 = "id3", $value3 = new \stdClass());
@@ -22,14 +22,14 @@ class ContainerTest extends TestCase
 
     public function testSame()
     {
-        $container = new Container();
+        $container = new Container([]);
         $container->set($id = "id", $value3 = function (Container $container){return new \stdClass();});
         self::assertSame($container->get($id), $container->get($id));
     }
 
     public function testAutoInstantiating()
     {
-        $c = new Container();
+        $c = new Container([]);
 
         self::assertNotNull($value1 = $c->get(\StdClass::class));
         self::assertNotNull($value2 = $c->get(\StdClass::class));
@@ -42,7 +42,7 @@ class ContainerTest extends TestCase
 
     public function testAutoWiring()
     {
-        $c = new Container();
+        $c = new Container([]);
         $outer = $c->get(Outer::class);
 
         self::assertInstanceOf(Outer::class, $outer);
@@ -52,7 +52,7 @@ class ContainerTest extends TestCase
 
     public function testAutoWiringWithArrayAndDefaultParam()
     {
-        $c = new Container();
+        $c = new Container([]);
         /**
          * @var OuterWithParams $outer
          */

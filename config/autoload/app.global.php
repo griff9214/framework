@@ -9,6 +9,7 @@ use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\AuraAdapter\AuraRouterAdapter;
 use Framework\Http\Router\Router;
 use Framework\Http\Router\RouterInterface;
+use Framework\Template\TemplateRenderer;
 use Laminas\Diactoros\Response;
 use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Container\ContainerInterface;
@@ -39,7 +40,11 @@ return [
                         $c->get(MiddlewareResolver::class),
                         new Response(),
                         new NotFoundHandler());
+                },
+                TemplateRenderer::class => function(){
+                    return new TemplateRenderer("templates");
                 }
+
             ]
     ],
     'debug' => true
