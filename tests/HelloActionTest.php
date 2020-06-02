@@ -20,20 +20,20 @@ class HelloActionTest extends TestCase
         $this->requestGuest = (new ServerRequest());
     }
 
-    public function testGuest()
-    {
-        $action = new HelloAction($this->renderer);
-        $resp = $action->handle($this->requestGuest);
-
-        self::assertEquals(200, $resp->getStatusCode());
-        self::assertStringContainsString("Hello, Guest", $resp->getBody()->getContents());
-    }
-    public function testName()
+    public function testWithName()
     {
         $action = new HelloAction($this->renderer);
         $resp = $action->handle($this->requestVasya);
 
         self::assertEquals(200, $resp->getStatusCode());
         self::assertStringContainsString("Hello, Vasya", $resp->getBody()->getContents());
+    }
+    public function testEmpty()
+    {
+        $action = new HelloAction($this->renderer);
+        $resp = $action->handle($this->requestGuest);
+
+        self::assertEquals(200, $resp->getStatusCode());
+        self::assertStringContainsString("Hello, Guest", $resp->getBody()->getContents());
     }
 }

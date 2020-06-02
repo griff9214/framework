@@ -39,7 +39,6 @@ class Application
         } else {
             $handler = $pathOrHandler;
             $handler = $this->resolver->resolve($handler);
-
             $this->middlewarePipe->pipe($handler);
         }
     }

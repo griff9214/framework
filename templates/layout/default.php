@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title><?= $title ?> - App</title>
+    <title><?= $this->params['title'] ?> - App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
     <style>
@@ -55,9 +55,11 @@
         </div>
     </nav>
 </header>
-
-<?= $content ?>
-
+<div class="app-content">
+    <main class="container">
+        <?= $content ?>
+    </main>
+</div>
 <footer class="app-footer">
     <div class="container">
         <hr/>
