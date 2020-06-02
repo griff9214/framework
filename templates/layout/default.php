@@ -1,5 +1,6 @@
 <?php
 /**
+ * @var \Framework\Template\TemplateRenderer $this
  * @var string $title
  * @var string $content
  */
@@ -57,7 +58,7 @@
 </header>
 <div class="app-content">
     <main class="container">
-        <?= $content ?>
+        <?= $this->renderBlock('content') ?>
     </main>
 </div>
 <footer class="app-footer">
