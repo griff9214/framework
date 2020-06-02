@@ -19,7 +19,7 @@ class TemplateRenderer
     {
         extract($params, EXTR_OVERWRITE);
         ob_start();
-        require $this->path . "/$viewName.php";
+        require $this->path . "/skeleton.php";
         $html = ob_get_clean();
         return $html;
     }
