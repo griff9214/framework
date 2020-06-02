@@ -1,3 +1,7 @@
+<?php
+$extends = "layout/default";
+$params['title'] = "About";
+?>
 <main class="container">
     <ul class="breadcrumb">
         <li><a href="/">Home</a></li>

@@ -22,7 +22,7 @@ class AboutAction implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return new HtmlResponse($this->templateRenderer->render("about", []));
+        return new HtmlResponse($this->templateRenderer->render("app/about", []));
 
     }
 }

@@ -19,9 +19,12 @@ class TemplateRenderer
     {
         extract($params, EXTR_OVERWRITE);
         ob_start();
-        require $this->path . "/skeleton.php";
-        $html = ob_get_clean();
-        return $html;
+        require $this->path . "/$viewName.php";
+        $params["content"] = ob_get_clean();
+        if (!empty($extends)){
+            return $this->render($extends, $params);
+        }
+        return $params["content"];
     }
 
 }

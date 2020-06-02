@@ -21,7 +21,7 @@ class HelloAction implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $name = $request->getQueryParams()['name'] ?? 'Guest';
-        return new HtmlResponse($this->templateRenderer->render("hello", ['name' => $name]));
+        return new HtmlResponse($this->templateRenderer->render("app/hello", ['name' => $name]));
     }
 
 }
