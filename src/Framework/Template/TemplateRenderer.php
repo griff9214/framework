@@ -21,7 +21,7 @@ class TemplateRenderer
         $this->blockNames = new \SplStack();
     }
 
-    public function render($viewName, array $params): string
+    public function render($viewName, array $params = []): string
     {
         extract($params, EXTR_OVERWRITE);
 //        $this->params = [];
@@ -29,8 +29,8 @@ class TemplateRenderer
         ob_start();
         require $this->path . "/$viewName.php";
         $content = ob_get_clean();
-        if (!empty($this->extends)){
-            return $this->render($this->extends, ["content" => $content]);
+        if (!empty($this->extends)) {
+            return $this->render($this->extends);
         }
         return $content;
     }
@@ -41,13 +41,22 @@ class TemplateRenderer
         ob_start();
     }
 
+    public function ensureBlock(string $blockName)
+    {
+        if ($this->hasBlock($blockName)) {
+            return false;
+        }
+        $this->beginBlock($blockName);
+        return true;
+    }
+
     public function endBlock(string $blockName = "")
     {
         $blockName = $this->blockNames->pop();
         $this->blocks[$blockName] = ob_get_clean();
     }
 
-    public function renderBlock(string $blockName):string
+    public function renderBlock(string $blockName): string
     {
         return $this->blocks[$blockName] ?? "";
 
@@ -56,6 +65,11 @@ class TemplateRenderer
     public function extend(string $layoutName)
     {
         $this->extends = $layoutName;
+    }
+
+    public function hasBlock(string $blockName)
+    {
+        return array_key_exists($blockName, $this->blocks);
     }
 
 }
