@@ -39,10 +39,15 @@
 
 <div class="app-content">
     <main class="container">
+        <ul class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li class="active">Cabinet</li>
+        </ul>
+
         <div class="jumbotron">
-            <h1>Hello!</h1>
+            <h1>About this site!</h1>
             <p>
-                Congratulations! You have successfully created your application.
+                This block will contain some information
             </p>
         </div>
     </main>

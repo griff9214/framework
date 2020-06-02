@@ -1,5 +1,10 @@
+<?php
+/**
+* @var string $name
+ */
+?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -7,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
     <style>
-        body { padding-top: 70px; }
+body { padding-top: 70px; }
         .app { display: flex; min-height: 100vh; flex-direction: column; }
         .app-content { flex: 1; }
         .app-footer { padding-bottom: 1em; }
@@ -24,7 +29,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="/">
-                    Application
+    Application
                 </a>
             </div>
             <div class="collapse navbar-collapse">
@@ -39,10 +44,14 @@
 
 <div class="app-content">
     <main class="container">
+        <ul class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li class="active">Cabinet</li>
+        </ul>
         <div class="jumbotron">
             <h1>Hello!</h1>
             <p>
-                Congratulations! You have successfully created your application.
+Hello! <?= htmlspecialchars($name, ENT_QUOTES | ENT_SUBSTITUTE) ?>.
             </p>
         </div>
     </main>
