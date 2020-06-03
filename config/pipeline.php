@@ -18,5 +18,5 @@ $app->pipe(DeveloperMiddleware::class);
 $app->pipe(TimerMiddleware::class);
 $app->pipe(RouteMiddleware::class);
 //$app->pipe(BlogUnavailable::class);
-$app->pipe("cabinet", BasicAuthMiddleware::class);
+//$app->pipe("cabinet", BasicAuthMiddleware::class);
 $app->pipe(DispatchMiddleware::class);

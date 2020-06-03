@@ -39,7 +39,7 @@ return [
                         $c->get(MiddlewarePipe::class),
                         $c->get(MiddlewareResolver::class),
                         new Response(),
-                        new NotFoundHandler());
+                        $c->get(NotFoundHandler::class));
                 },
                 TemplateRenderer::class => function(ContainerInterface $c){
                     return new TemplateRenderer("templates", $c->get(Router::class));
