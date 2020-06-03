@@ -4,8 +4,7 @@
 namespace Framework\Template;
 
 
-use Laminas\Diactoros\ServerRequest;
-use phpDocumentor\Reflection\Types\Nullable;
+use Framework\Http\Router\RouterInterface;
 
 class TemplateRenderer
 {
@@ -14,11 +13,13 @@ class TemplateRenderer
     private $extends = null;
     private array $blocks;
     private \SplStack $blockNames;
+    private RouterInterface $router;
 
-    public function __construct(string $path)
+    public function __construct(string $path, RouterInterface $router)
     {
         $this->path = $path;
         $this->blockNames = new \SplStack();
+        $this->router = $router;
     }
 
     public function render($viewName, array $params = []): string
@@ -35,12 +36,6 @@ class TemplateRenderer
         return $content;
     }
 
-    public function beginBlock(string $blockName)
-    {
-        $this->blockNames->push($blockName);
-        ob_start();
-    }
-
     public function ensureBlock(string $blockName)
     {
         if ($this->hasBlock($blockName)) {
@@ -48,6 +43,17 @@ class TemplateRenderer
         }
         $this->beginBlock($blockName);
         return true;
+    }
+
+    public function hasBlock(string $blockName)
+    {
+        return array_key_exists($blockName, $this->blocks);
+    }
+
+    public function beginBlock(string $blockName)
+    {
+        $this->blockNames->push($blockName);
+        ob_start();
     }
 
     public function endBlock(string $blockName = "")
@@ -59,7 +65,6 @@ class TemplateRenderer
     public function renderBlock(string $blockName): string
     {
         return $this->blocks[$blockName] ?? "";
-
     }
 
     public function extend(string $layoutName)
@@ -67,9 +72,21 @@ class TemplateRenderer
         $this->extends = $layoutName;
     }
 
-    public function hasBlock(string $blockName)
+    public function path(string $routeName, array $params = [])
     {
-        return array_key_exists($blockName, $this->blocks);
+        return $this->router->generate($routeName, $params);
     }
+
+    public function url(string $routeName, array $params = [])
+    {
+        $host = $_SERVER["HTTP_HOST"];
+        return "http://" . $host . $this->router->generate($routeName, $params);
+    }
+
+    public function encode(string $html)
+    {
+        return htmlspecialchars($html, ENT_SUBSTITUTE | ENT_QUOTES);
+    }
+
 
 }

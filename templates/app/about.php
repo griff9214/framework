@@ -8,7 +8,7 @@ $this->params['title'] = "About";
 
 <?php $this->beginBlock('breadcrumbs'); ?>
 <ul class="breadcrumb">
-    <li><a href="/">Home</a></li>
+    <li><a href="<?= $this->encode($this->path("home"))?>">Home</a></li>
     <li class="active">About</li>
 </ul>
 <?php $this->endBlock('breadcrumbs'); ?>
@@ -21,7 +21,7 @@ $this->params['title'] = "About";
         This block will contain some information
     </p>
 </div>
-<?php $this->endBlock('content'); ?>
+<?php $this->endBlock('main'); ?>
 
 <?php $this->beginBlock('sidebar'); ?>
 <div class="list-group">

@@ -41,8 +41,8 @@ return [
                         new Response(),
                         new NotFoundHandler());
                 },
-                TemplateRenderer::class => function(){
-                    return new TemplateRenderer("templates");
+                TemplateRenderer::class => function(ContainerInterface $c){
+                    return new TemplateRenderer("templates", $c->get(Router::class));
                 }
 
             ]

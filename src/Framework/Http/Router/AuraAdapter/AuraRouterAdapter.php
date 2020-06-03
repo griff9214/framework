@@ -5,7 +5,6 @@ namespace Framework\Http\Router\AuraAdapter;
 
 
 use Aura\Router\Exception;
-use Aura\Router\Route;
 use Aura\Router\RouterContainer;
 use Framework\Http\Router\Exceptions\RequestNotMatchedException;
 use Framework\Http\Router\Exceptions\RouteNotFoundException;

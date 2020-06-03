@@ -33,6 +33,9 @@ class Router implements RouterInterface
     public function generate(string $name, array $params = []) :?string
     {
         foreach ($this->routerCollection->getRoutes() as $route){
+            /**
+             * @var RouteInterface $route
+             */
             if ( ($uri = $route->generate($name, $params)) !== null){
                 return $uri;
             }
