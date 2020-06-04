@@ -20,9 +20,7 @@ class BlogUnavailable implements MiddlewareInterface
          * @var RouteInterface $route
          */
         if (!empty($route = $request->getAttribute(RouteMiddleware::REQUEST_ROUTE_PARAM))) {
-            if ($route->getName() === "blog-index") {
-                return new HtmlResponse("Blog is not available at this moment", 403);
-            }
+            return new HtmlResponse("Blog is not available at this moment", 403);
         }
         return $handler->handle($request);
     }

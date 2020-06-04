@@ -2,6 +2,7 @@
 
 
 use App\Http\Middleware\BasicAuthMiddleware;
+use App\Http\Middleware\BlogUnavailable;
 use App\Http\Middleware\DeveloperMiddleware;
 use App\Http\Middleware\ErrorHandlerMiddleware;
 use App\Http\Middleware\TimerMiddleware;
@@ -17,6 +18,6 @@ $app->pipe(ErrorHandlerMiddleware::class);
 $app->pipe(DeveloperMiddleware::class);
 $app->pipe(TimerMiddleware::class);
 $app->pipe(RouteMiddleware::class);
-//$app->pipe(BlogUnavailable::class);
-//$app->pipe("cabinet", BasicAuthMiddleware::class);
+$app->pipe("blog", BlogUnavailable::class);
+$app->pipe("cabinet", BasicAuthMiddleware::class);
 $app->pipe(DispatchMiddleware::class);

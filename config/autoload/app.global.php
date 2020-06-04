@@ -27,9 +27,6 @@ return [
                 RouterInterface::class => function (ContainerInterface $c) {
                     return $c->get(Router::class);
                 },
-//                BasicAuthMiddleware::class => function (ContainerInterface $c) {
-//                    return new BasicAuthMiddleware($c->get("params")['users']);
-//                },
                 Application::class => function (ContainerInterface $c) {
                     return new Application(
                         $c->get(Router::class),

@@ -26,8 +26,7 @@ class RouteMiddleware implements MiddlewareInterface
 //        try {
             $resultRoute = $this->router->match($request);
             return $handler->handle($request->withAttribute(self::REQUEST_ROUTE_PARAM, $resultRoute));
-//        }
-// catch (RequestNotMatchedException $e){
+//        } catch (RequestNotMatchedException $e) {
 //            return $handler->handle($request);
 //        }
     }

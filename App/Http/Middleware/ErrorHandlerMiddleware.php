@@ -32,12 +32,7 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         } catch (\Throwable $exception){
             if ($this->debug === true){
-                $response = new JsonResponse([
-                    'error' => 'ServerError',
-                    'code' => $exception->getCode(),
-                    'message'=>$exception->getMessage(),
-//                    'trace'=> $exception->getTrace()
-                ], 500);
+                $response = new HtmlResponse($this->renderer->render("app/errors/debug", ["exception" => $exception]), 500);
             } else {
                 $response = new HtmlResponse($this->renderer->render("app/errors/500"), 500);
             }
