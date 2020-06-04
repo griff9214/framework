@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class HandlerToCallableWrapper implements RequestHandlerInterface
+class CallableToHandlerWrapper implements RequestHandlerInterface
 {
     private $function;
     private ResponseInterface $response;

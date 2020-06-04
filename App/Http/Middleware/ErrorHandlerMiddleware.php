@@ -4,6 +4,7 @@
 namespace App\Http\Middleware;
 
 
+use Framework\Template\TemplateRenderer;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\Response\JsonResponse;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -16,10 +17,12 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
 {
 
     private $debug;
+    private TemplateRenderer $renderer;
 
-    public function __construct($debug = false)
+    public function __construct(TemplateRenderer $renderer, $debug = false)
     {
         $this->debug = $debug;
+        $this->renderer = $renderer;
     }
 
 
@@ -36,7 +39,7 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
 //                    'trace'=> $exception->getTrace()
                 ], 500);
             } else {
-                $response = new HtmlResponse("Server error", 500);
+                $response = new HtmlResponse($this->renderer->render("app/errors/500"), 500);
             }
 
         }

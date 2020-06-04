@@ -27,9 +27,6 @@ return [
                 RouterInterface::class => function (ContainerInterface $c) {
                     return $c->get(Router::class);
                 },
-                ErrorHandlerMiddleware::class => function (ContainerInterface $c) {
-                    return new ErrorHandlerMiddleware($c->get('params')['debug']);
-                },
 //                BasicAuthMiddleware::class => function (ContainerInterface $c) {
 //                    return new BasicAuthMiddleware($c->get("params")['users']);
 //                },
@@ -43,9 +40,13 @@ return [
                 },
                 TemplateRenderer::class => function(ContainerInterface $c){
                     return new TemplateRenderer("templates", $c->get(Router::class));
+                },
+                ErrorHandlerMiddleware::class => function(ContainerInterface $c){
+                    return new ErrorHandlerMiddleware($c->get(TemplateRenderer::class), $c->get("params")["debug"]);
                 }
+
 
             ]
     ],
-    'debug' => true
+    'debug' => false
 ];

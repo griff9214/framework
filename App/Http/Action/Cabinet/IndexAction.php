@@ -21,7 +21,7 @@ class IndexAction implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $name = $request->getAttribute(BasicAuthMiddleware::ATTRIBUTE);
+        $name = $request->getAttribute(BasicAuthMiddleware::ATTRIBUTE) ?: "Guest";
         return new HtmlResponse($this->templateRenderer->render("app/cabinetIndex", ['name' => $name]));
     }
 

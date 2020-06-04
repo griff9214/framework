@@ -4,7 +4,7 @@
 namespace Framework\Http\Middleware;
 
 
-use Framework\Http\Pipeline\HandlerToCallableWrapper;
+use Framework\Http\Pipeline\CallableToHandlerWrapper;
 use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\RouteInterface;
 use Psr\Container\ContainerInterface;
@@ -30,7 +30,7 @@ class DispatchMiddleware
             $resolver = $this->container->get(MiddlewareResolver::class);
             $middleware = $resolver->resolve($route->getHandler());
 
-            return $middleware->process($request, new HandlerToCallableWrapper($handler, $response));
+            return $middleware->process($request, new CallableToHandlerWrapper($handler, $response));
         } else {
             return $handler($request, $response);
         }

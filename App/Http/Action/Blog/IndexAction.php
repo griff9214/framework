@@ -25,7 +25,6 @@ class IndexAction implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $posts = $this->postRepository->getAll();
-
         return new HtmlResponse($this->renderer->render("app/blog/index", ["posts" => $posts]));
     }
 
