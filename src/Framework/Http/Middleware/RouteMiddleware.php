@@ -23,11 +23,11 @@ class RouteMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-//        try {
+        try {
             $resultRoute = $this->router->match($request);
             return $handler->handle($request->withAttribute(self::REQUEST_ROUTE_PARAM, $resultRoute));
-//        } catch (RequestNotMatchedException $e) {
-//            return $handler->handle($request);
-//        }
+        } catch (RequestNotMatchedException $e) {
+            return $handler->handle($request);
+        }
     }
 }

@@ -4,10 +4,8 @@
 namespace App\Http\Middleware;
 
 
-use Framework\Template\TemplateRenderer;
+use Framework\Template\php\TemplateRenderer;
 use Laminas\Diactoros\Response\HtmlResponse;
-use Laminas\Diactoros\Response\JsonResponse;
-use phpDocumentor\Reflection\Types\Boolean;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;

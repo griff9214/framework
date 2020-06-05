@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Framework\Template;
+namespace Framework\Template\php;
 
 
 use Framework\Http\Router\RouterInterface;
@@ -24,14 +24,22 @@ class TemplateRenderer
 
     public function render($viewName, array $params = []): string
     {
-        extract($params, EXTR_OVERWRITE);
+        try {
+            $level = ob_get_level();
+            extract($params, EXTR_OVERWRITE);
 //        $this->params = [];
-        $this->extends = null;
-        ob_start();
-        require $this->path . "/$viewName.php";
-        $content = ob_get_clean();
-        if (!empty($this->extends)) {
-            return $this->render($this->extends);
+            $this->extends = null;
+            ob_start();
+            require $this->path . "/$viewName.php";
+            $content = ob_get_clean();
+            if (!empty($this->extends)) {
+                return $this->render($this->extends);
+            }
+        } catch (\Throwable|\Exception $e) {
+            while (ob_get_level() > $level) {
+                ob_end_clean();
+            }
+            throw $e;
         }
         return $content;
     }

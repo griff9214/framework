@@ -2,11 +2,10 @@
 
 
 use App\Http\Action\HelloAction;
-use Framework\Http\Router\AuraAdapter\AuraRouterAdapter;
 use Framework\Http\Router\RouteDataObject;
 use Framework\Http\Router\RouteInterface;
 use Framework\Http\Router\RouterInterface;
-use Framework\Template\TemplateRenderer;
+use Framework\Template\php\TemplateRenderer;
 use Laminas\Diactoros\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;

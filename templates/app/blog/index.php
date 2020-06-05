@@ -1,7 +1,7 @@
 <?php
 /**
  * @var array $posts
- * @var \Framework\Template\TemplateRenderer $this
+ * @var \Framework\Template\php\TemplateRenderer $this
  * @var \App\ReadModel\View\PostView[] $posts
  */
 
@@ -17,6 +17,7 @@ $this->params['title'] = "Blog Index";
 <?php $this->beginBlock('breadcrumbs'); ?>
     <ul class="breadcrumb">
         <li><a href="<?= $this->encode($this->path('home')) ?>">Home</a></li>
+        <li><a href="<?= $this->encode($this->path('hme')) ?>">Home</a></li>
         <li class="active">Blog</li>
     </ul>
 <?php $this->endBlock(); ?>

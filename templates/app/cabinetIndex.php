@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \Framework\Template\TemplateRenderer $this
+ * @var \Framework\Template\php\TemplateRenderer $this
  * @var string $name
  */
 $this->extend("layout/col-9-3");

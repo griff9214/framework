@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Action\NotFoundHandler;
-use App\Http\Middleware\BasicAuthMiddleware;
 use App\Http\Middleware\ErrorHandlerMiddleware;
 use Aura\Router\RouterContainer;
 use Framework\Http\Application;
@@ -9,7 +8,7 @@ use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\AuraAdapter\AuraRouterAdapter;
 use Framework\Http\Router\Router;
 use Framework\Http\Router\RouterInterface;
-use Framework\Template\TemplateRenderer;
+use Framework\Template\php\TemplateRenderer;
 use Laminas\Diactoros\Response;
 use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Container\ContainerInterface;
