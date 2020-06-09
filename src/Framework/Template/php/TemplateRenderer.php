@@ -4,8 +4,6 @@
 namespace Framework\Template\php;
 
 
-use Framework\Http\Router\RouterInterface;
-
 class TemplateRenderer
 {
     private string $path;
@@ -13,13 +11,35 @@ class TemplateRenderer
     private $extends = null;
     private array $blocks;
     private \SplStack $blockNames;
-    private RouterInterface $router;
+    /**
+     * @var Extension[]
+     */
+    private array $extensions = [];
 
-    public function __construct(string $path, RouterInterface $router)
+    public function __construct(string $path)
     {
         $this->path = $path;
         $this->blockNames = new \SplStack();
-        $this->router = $router;
+    }
+
+    public function addExtension(Extension $extension)
+    {
+        $this->extensions[] = $extension;
+    }
+
+    public function __call($name, $arguments)
+    {
+        foreach ($this->extensions as $extension) {
+            foreach ($extension->getFunctions() as $function) {
+                if ($function->name === $name) {
+                    if ($function->needRenderer) {
+                        return call_user_func_array($function->callback, [$this, ...$arguments]);
+                    } else {
+                        return call_user_func_array($function->callback, $arguments);
+                    }
+                }
+            }
+        }
     }
 
     public function render($viewName, array $params = []): string
@@ -80,10 +100,10 @@ class TemplateRenderer
         $this->extends = $layoutName;
     }
 
-    public function path(string $routeName, array $params = [])
-    {
-        return $this->router->generate($routeName, $params);
-    }
+//    public function path(string $routeName, array $params = [])
+//    {
+//        return $this->router->generate($routeName, $params);
+//    }
 
     public function url(string $routeName, array $params = [])
     {

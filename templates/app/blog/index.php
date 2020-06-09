@@ -17,7 +17,6 @@ $this->params['title'] = "Blog Index";
 <?php $this->beginBlock('breadcrumbs'); ?>
     <ul class="breadcrumb">
         <li><a href="<?= $this->encode($this->path('home')) ?>">Home</a></li>
-        <li><a href="<?= $this->encode($this->path('hme')) ?>">Home</a></li>
         <li class="active">Blog</li>
     </ul>
 <?php $this->endBlock(); ?>
