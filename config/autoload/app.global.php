@@ -10,7 +10,8 @@ use Framework\Http\Router\Router;
 use Framework\Http\Router\RouterInterface;
 use Framework\Template\php\Extensions\PathExtension;
 use Framework\Template\php\PhpRenderer;
-use Framework\Template\php\TemplateRenderer;
+use Framework\Template\TemplateRenderer;
+use Framework\Template\twig\TwigRenderer;
 use Laminas\Diactoros\Response;
 use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Container\ContainerInterface;
@@ -37,14 +38,6 @@ return [
                         $c->get(MiddlewareResolver::class),
                         new Response(),
                         $c->get(NotFoundHandler::class));
-                },
-                TemplateRenderer::class => function(ContainerInterface $c){
-                    $renderer =  new PhpRenderer("templates");
-                    $renderer->addExtension($c->get(PathExtension::class));
-                    return $renderer;
-                },
-                LoaderInterface::class => function(ContainerInterface $c){
-                   return new FilesystemLoader("templates");
                 },
                 ErrorHandlerMiddleware::class => function(ContainerInterface $c){
                     return new ErrorHandlerMiddleware($c->get(PhpRenderer::class), $c->get("params")["debug"]);

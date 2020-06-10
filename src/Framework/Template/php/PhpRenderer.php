@@ -4,6 +4,7 @@
 namespace Framework\Template\php;
 
 
+use Framework\Template\TemplateRenderer;
 use http\Exception\InvalidArgumentException;
 
 class PhpRenderer implements TemplateRenderer

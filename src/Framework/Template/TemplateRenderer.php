@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Template\php;
+namespace Framework\Template;
 
 interface TemplateRenderer
 {

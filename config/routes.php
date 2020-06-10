@@ -10,7 +10,7 @@ use Framework\Http\Application;
  * @var Application $app
  */
 $app->get("home", "/", App\Http\Action\HelloAction::class);
-$app->get("aboutPage", "^/about", AboutAction::class);
+$app->get("aboutPage", "/about", AboutAction::class);
 
 $app->get("cabinet-index", "/cabinet", IndexAction::class);
 $app->get("cabinet-edit", "/cabinet/edit", IndexAction::class);

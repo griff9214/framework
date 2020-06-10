@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 
 
 use Framework\Template\php\PhpRenderer;
-use Framework\Template\php\TemplateRenderer;
+use Framework\Template\TemplateRenderer;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
