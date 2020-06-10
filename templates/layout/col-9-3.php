@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \Framework\Template\php\TemplateRenderer $this
+ * @var \Framework\Template\php\PhpRenderer $this
  */
 $this->extend("layout/default");
 ?>

@@ -1,11 +1,11 @@
 <?php
 /**
- * @var \Framework\Template\php\TemplateRenderer $this
+ * @var \Framework\Template\php\PhpRenderer $this
  * @var \Throwable $exception
  * @var array $params
  */
 
-use Framework\Template\php\TemplateRenderer;
+use Framework\Template\php\PhpRenderer;
 
 $this->params['title'] = "500 - Server Error";
 $this->extend("layout/default");

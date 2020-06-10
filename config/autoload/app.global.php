@@ -9,6 +9,7 @@ use Framework\Http\Router\AuraAdapter\AuraRouterAdapter;
 use Framework\Http\Router\Router;
 use Framework\Http\Router\RouterInterface;
 use Framework\Template\php\Extensions\PathExtension;
+use Framework\Template\php\PhpRenderer;
 use Framework\Template\php\TemplateRenderer;
 use Laminas\Diactoros\Response;
 use Laminas\Stratigility\MiddlewarePipe;
@@ -38,7 +39,7 @@ return [
                         $c->get(NotFoundHandler::class));
                 },
                 TemplateRenderer::class => function(ContainerInterface $c){
-                    $renderer =  new TemplateRenderer("templates");
+                    $renderer =  new PhpRenderer("templates");
                     $renderer->addExtension($c->get(PathExtension::class));
                     return $renderer;
                 },
@@ -46,7 +47,7 @@ return [
                    return new FilesystemLoader("templates");
                 },
                 ErrorHandlerMiddleware::class => function(ContainerInterface $c){
-                    return new ErrorHandlerMiddleware($c->get(TemplateRenderer::class), $c->get("params")["debug"]);
+                    return new ErrorHandlerMiddleware($c->get(PhpRenderer::class), $c->get("params")["debug"]);
                 }
             ]
     ],

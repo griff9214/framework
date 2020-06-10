@@ -1,11 +1,11 @@
 <?php
 /**
- * @var \Framework\Template\php\TemplateRenderer $this
+ * @var \Framework\Template\php\PhpRenderer $this
  * @var Psr\Http\Message\ServerRequestInterface $request
  * @var array $params
  */
 
-use Framework\Template\php\TemplateRenderer;
+use Framework\Template\php\PhpRenderer;
 
 $this->params['title'] = "404 - Not Found";
 $this->extend("layout/default");

@@ -4,6 +4,7 @@
 namespace App\Http\Middleware;
 
 
+use Framework\Template\php\PhpRenderer;
 use Framework\Template\php\TemplateRenderer;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -14,7 +15,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 class ErrorHandlerMiddleware implements MiddlewareInterface
 {
 
-    private $debug;
+    private bool $debug;
     private TemplateRenderer $renderer;
 
     public function __construct(TemplateRenderer $renderer, $debug = false)

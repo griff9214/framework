@@ -5,21 +5,21 @@ use App\Http\Action\HelloAction;
 use Framework\Http\Router\RouteDataObject;
 use Framework\Http\Router\RouteInterface;
 use Framework\Http\Router\RouterInterface;
-use Framework\Template\php\TemplateRenderer;
+use Framework\Template\php\PhpRenderer;
 use Laminas\Diactoros\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 
 class HelloActionTest extends TestCase
 {
-    private TemplateRenderer $renderer;
+    private PhpRenderer $renderer;
     private $requestVasya;
     private ServerRequest $requestGuest;
 
 
     public function setUp(): void
     {
-        $this->renderer = new TemplateRenderer("templates", new DummyRouter());
+        $this->renderer = new PhpRenderer("templates", new DummyRouter());
         $this->requestVasya = (new ServerRequest())->withMethod("get")->withQueryParams(["name"=>"Vasya"]);
         $this->requestGuest = (new ServerRequest());
     }
