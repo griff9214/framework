@@ -13,6 +13,8 @@ use Framework\Template\php\TemplateRenderer;
 use Laminas\Diactoros\Response;
 use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Container\ContainerInterface;
+use Twig\Loader\FilesystemLoader;
+use Twig\Loader\LoaderInterface;
 
 return [
     'dependencies' => [
@@ -40,11 +42,12 @@ return [
                     $renderer->addExtension($c->get(PathExtension::class));
                     return $renderer;
                 },
+                LoaderInterface::class => function(ContainerInterface $c){
+                   return new FilesystemLoader("templates");
+                },
                 ErrorHandlerMiddleware::class => function(ContainerInterface $c){
                     return new ErrorHandlerMiddleware($c->get(TemplateRenderer::class), $c->get("params")["debug"]);
                 }
-
-
             ]
     ],
     'debug' => false

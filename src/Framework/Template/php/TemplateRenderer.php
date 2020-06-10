@@ -4,6 +4,8 @@
 namespace Framework\Template\php;
 
 
+use http\Exception\InvalidArgumentException;
+
 class TemplateRenderer
 {
     private string $path;
@@ -40,6 +42,7 @@ class TemplateRenderer
                 }
             }
         }
+        throw new \InvalidArgumentException("Udefined function $name");
     }
 
     public function render($viewName, array $params = []): string
@@ -100,21 +103,8 @@ class TemplateRenderer
         $this->extends = $layoutName;
     }
 
-//    public function path(string $routeName, array $params = [])
-//    {
-//        return $this->router->generate($routeName, $params);
-//    }
-
-    public function url(string $routeName, array $params = [])
-    {
-        $host = $_SERVER["HTTP_HOST"];
-        return "http://" . $host . $this->router->generate($routeName, $params);
-    }
-
     public function encode(string $html)
     {
         return htmlspecialchars($html, ENT_SUBSTITUTE | ENT_QUOTES);
     }
-
-
 }

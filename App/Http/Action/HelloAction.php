@@ -8,12 +8,13 @@ use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Twig\Environment;
 
 class HelloAction implements RequestHandlerInterface
 {
-    private TemplateRenderer $templateRenderer;
+    private Environment $templateRenderer;
 
-    public function __construct(TemplateRenderer $templateRenderer)
+    public function __construct(Environment $templateRenderer)
     {
         $this->templateRenderer = $templateRenderer;
     }
@@ -21,7 +22,7 @@ class HelloAction implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $name = $request->getQueryParams()['name'] ?? 'Guest';
-        return new HtmlResponse($this->templateRenderer->render("app/hello", ['name' => $name]));
+        return new HtmlResponse($this->templateRenderer->render("app/hello.html.twig", ['name' => $name]));
     }
 
 }

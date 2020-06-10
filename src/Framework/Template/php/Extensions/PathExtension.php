@@ -21,7 +21,8 @@ class PathExtension extends Extension
     public function getFunctions(): array
     {
         return [
-            new SimpleFunction("path", [$this, "getPath"], true)
+            new SimpleFunction("path", [$this, "getPath"], true),
+            new SimpleFunction("url", [$this, "getUrl"])
         ];
     }
 
@@ -29,4 +30,11 @@ class PathExtension extends Extension
     {
         return $this->router->generate($routeName, $params);
     }
+
+    public function getUrl(string $routeName, array $params = [])
+    {
+        $host = $_SERVER["HTTP_HOST"];
+        return "http://" . $host . $this->router->generate($routeName, $params);
+    }
+
 }
