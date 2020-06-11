@@ -4,6 +4,7 @@
 namespace App\Http\Action;
 
 use Framework\Template\php\PhpRenderer;
+use Framework\Template\TemplateRenderer;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -12,9 +13,9 @@ use Twig\Environment;
 
 class HelloAction implements RequestHandlerInterface
 {
-    private Environment $templateRenderer;
+    private TemplateRenderer $templateRenderer;
 
-    public function __construct(Environment $templateRenderer)
+    public function __construct(TemplateRenderer $templateRenderer)
     {
         $this->templateRenderer = $templateRenderer;
     }
@@ -22,7 +23,7 @@ class HelloAction implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $name = $request->getQueryParams()['name'] ?? 'Guest';
-        return new HtmlResponse($this->templateRenderer->render("app/hello.html.twig", ['name' => $name]));
+        return new HtmlResponse($this->templateRenderer->render("app/hello", ['name' => $name]));
     }
 
 }

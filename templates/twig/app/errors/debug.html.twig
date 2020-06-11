@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>{{ block('title') }} - App</title>
+    <title>500 - server error</title>
     {% block meta %}
         <meta name="keywords" content="parent keywords">
     {% endblock %}
@@ -41,18 +41,35 @@
                 </a>
             </div>
             <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{{ path('aboutPage') }}"><i class="glyphicon glyphicon-book"></i> About</a></li>
-                    <li><a href="{{ path('cabinet-index') }}"><i class="glyphicon glyphicon-user"></i> Cabinet</a></li>
-                </ul>
             </div>
         </div>
     </nav>
 </header>
 <div class="app-content">
     <main class="container">
-        {% block breadcrumbs %}{% endblock %}
-        {% block content %}{% endblock %}
+
+{% block content %}
+
+    <div class="jumbotron">
+        <h1>{{ exception.getMessage() }}</h1>
+        <p>
+            Code {{ exception.getCode() }}
+        </p>
+        <p>
+            {{ exception.getFile() }} on line: {{ exception.getLine() }}
+        </p>
+        <table class="table table-striped table-hover">
+            <tbody>
+            {% for trace in exception.getTrace() %}
+            <tr>
+                <td>{{ trace.file }}</td>
+                <td>{{ trace.line }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
     </main>
 </div>
 <footer class="app-footer">

@@ -14,7 +14,7 @@ use Framework\Http\Middleware\RouteMiddleware;
 /**
  * @var Application $app
  */
-//$app->pipe(ErrorHandlerMiddleware::class);
+$app->pipe(ErrorHandlerMiddleware::class);
 $app->pipe(DeveloperMiddleware::class);
 $app->pipe(TimerMiddleware::class);
 $app->pipe(RouteMiddleware::class);

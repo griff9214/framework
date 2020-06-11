@@ -40,7 +40,7 @@ return [
                         $c->get(NotFoundHandler::class));
                 },
                 ErrorHandlerMiddleware::class => function(ContainerInterface $c){
-                    return new ErrorHandlerMiddleware($c->get(PhpRenderer::class), $c->get("params")["debug"]);
+                    return new ErrorHandlerMiddleware($c->get(TemplateRenderer::class), $c->get("params")["debug"]);
                 }
             ]
     ],
