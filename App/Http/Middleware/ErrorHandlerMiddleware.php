@@ -27,15 +27,14 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        try{
+        try {
             return $handler->handle($request);
-        } catch (\Throwable $exception){
-            if ($this->debug === true){
-                $response = new HtmlResponse($this->renderer->render("app/errors/debug", ["exception" => $exception]), 500);
-            } else {
-                $response = new HtmlResponse($this->renderer->render("app/errors/500"), 500);
-            }
-
+        } catch (\Throwable $exception) {
+            $view = ($this->debug) ? "app/errors/debug" : "app/errors/500";
+            $response = new HtmlResponse($this->renderer->render($view, [
+                "exception" => $exception,
+                "request" => $request,
+                ]), $exception->getCode() ?: 500);
         }
         return $response;
     }

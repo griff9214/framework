@@ -22,7 +22,7 @@ class MiddlewareResolverTest extends TestCase
      */
     public function testDirect($handler)
     {
-        $resolver = new MiddlewareResolver(new DummyContainer());
+        $resolver = new MiddlewareResolver(new DummyContainer(), new Response());
         $middleware = $resolver->resolve($handler);
         $response = $middleware->process(
             (new ServerRequest())->withAttribute('attribute', $value = 'value'),
@@ -37,7 +37,7 @@ class MiddlewareResolverTest extends TestCase
      */
     public function testNext($handler)
     {
-        $resolver = new MiddlewareResolver(new DummyContainer());
+        $resolver = new MiddlewareResolver(new DummyContainer(), new Response());
         $middleware = $resolver->resolve($handler);
         $response = $middleware->process(
             (new ServerRequest())->withAttribute('next', true),
@@ -52,7 +52,7 @@ class MiddlewareResolverTest extends TestCase
             new DummyMiddleware(),
             new CallableMiddleware(),
         ];
-        $resolver = new MiddlewareResolver(new DummyContainer());
+        $resolver = new MiddlewareResolver(new DummyContainer(), new Response());
         $middleware = $resolver->resolve($array);
         $response = $middleware->process(
             (new ServerRequest())->withAttribute('attribute', $value = 'value'),

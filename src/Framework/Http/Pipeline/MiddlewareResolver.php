@@ -4,10 +4,14 @@
 namespace Framework\Http\Pipeline;
 
 
+use Laminas\Stratigility\Middleware\CallableMiddlewareDecorator;
 use Laminas\Stratigility\Middleware\DoublePassMiddlewareDecorator;
 use Laminas\Stratigility\Middleware\RequestHandlerMiddleware;
 use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use ReflectionFunction;
@@ -16,10 +20,12 @@ class MiddlewareResolver
 {
 
     private ContainerInterface $container;
+    private ResponseInterface $responsePrototype;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, ResponseInterface $responsePrototype)
     {
         $this->container = $container;
+        $this->responsePrototype = $responsePrototype;
     }
 
     public function resolve($handler): MiddlewareInterface
@@ -28,7 +34,10 @@ class MiddlewareResolver
             return $this->createPipe($handler);
         }
         if (is_string($handler) && $this->container->has($handler)) {
-            return $this->resolve($this->container->get($handler));
+            return new CallableMiddlewareDecorator(function (ServerRequestInterface $request, RequestHandlerInterface $next) use ($handler){
+                $middleware = $this->resolve($this->container->get($handler));
+                return $middleware->process($request, $next);
+            });
         }
 
         if ($handler instanceof MiddlewareInterface) {
@@ -39,22 +48,16 @@ class MiddlewareResolver
             return new RequestHandlerMiddleware($handler);
         }
 
-        if (is_object($handler) && !($handler instanceof \Closure)) {
+        if (is_object($handler)) {
             $reflection = new \ReflectionObject($handler);
             if ($reflection->hasMethod("__invoke")) {
                 $method = $reflection->getMethod("__invoke");
-                $closure = $method->getClosure($handler);
-                return self::resolve($closure);
-            }
-        }
-
-        if (is_callable($handler)) {
-            $CReflection = new ReflectionFunction($handler);
-            $params = $CReflection->getParameters();
-            if (count($params) === 3 && $params[2]->isCallable()) {
-                return new DoublePassMiddlewareDecorator($handler);
-            } elseif (count($params) === 2 && $params[1]->isCallable()) {
-                return new CallableMiddlewareWrapper($handler);
+                $params = $method->getParameters();
+                if (count($params) === 3 && $params[2]->isCallable()) {
+                    return new DoublePassMiddlewareDecorator($handler, $this->responsePrototype);
+                } elseif (count($params) === 2 && $params[1]->isCallable()) {
+                    return new CallableMiddlewareWrapper($handler, $this->responsePrototype);
+                }
             }
         }
         //TODO: return UnknownMiddlewareException

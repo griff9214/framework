@@ -15,6 +15,7 @@ use Framework\Template\twig\TwigRenderer;
 use Laminas\Diactoros\Response;
 use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
 use Twig\Loader\FilesystemLoader;
 use Twig\Loader\LoaderInterface;
 
@@ -31,12 +32,15 @@ return [
                 RouterInterface::class => function (ContainerInterface $c) {
                     return $c->get(Router::class);
                 },
+                ResponseInterface::class => function(ContainerInterface $c){
+                    return new Response();
+                },
                 Application::class => function (ContainerInterface $c) {
                     return new Application(
                         $c->get(Router::class),
                         $c->get(MiddlewarePipe::class),
                         $c->get(MiddlewareResolver::class),
-                        new Response(),
+                        $c->get(ResponseInterface::class),
                         $c->get(NotFoundHandler::class));
                 },
                 ErrorHandlerMiddleware::class => function(ContainerInterface $c){
