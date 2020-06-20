@@ -4,6 +4,8 @@ use App\Http\Action\NotFoundHandler;
 use App\Http\Middleware\ErrorHandlerMiddleware;
 use Aura\Router\RouterContainer;
 use Framework\Http\Application;
+use Framework\Http\Middleware\ErrorHandler\ErrorResponseGeneratorInterface;
+use Framework\Http\Middleware\ErrorHandler\HtmlErrorResponseGenerator;
 use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\AuraAdapter\AuraRouterAdapter;
 use Framework\Http\Router\Router;
@@ -44,7 +46,10 @@ return [
                         $c->get(NotFoundHandler::class));
                 },
                 ErrorHandlerMiddleware::class => function(ContainerInterface $c){
-                    return new ErrorHandlerMiddleware($c->get(TemplateRenderer::class), $c->get("params")["debug"]);
+                    return new ErrorHandlerMiddleware($c->get(ErrorResponseGeneratorInterface::class));
+                },
+                ErrorResponseGeneratorInterface::class => function(ContainerInterface $c){
+                    return new HtmlErrorResponseGenerator($c->get(TemplateRenderer::class), $c->get("params")["debug"]);
                 }
             ]
     ],

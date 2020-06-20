@@ -23,7 +23,8 @@ class AboutAction implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return new HtmlResponse($this->templateRenderer->render("app/about", []));
+        throw new \Exception("sdfsdfsdf", 42);
+        //return new HtmlResponse($this->templateRenderer->render("app/about", []));
 
     }
 }

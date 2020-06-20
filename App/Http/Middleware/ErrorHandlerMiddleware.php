@@ -4,9 +4,7 @@
 namespace App\Http\Middleware;
 
 
-use Framework\Template\php\PhpRenderer;
-use Framework\Template\TemplateRenderer;
-use Laminas\Diactoros\Response\HtmlResponse;
+use Framework\Http\Middleware\ErrorHandler\ErrorResponseGeneratorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -15,27 +13,21 @@ use Psr\Http\Server\RequestHandlerInterface;
 class ErrorHandlerMiddleware implements MiddlewareInterface
 {
 
-    private bool $debug;
-    private TemplateRenderer $renderer;
+    private ErrorResponseGeneratorInterface $errorResponseGenerator;
 
-    public function __construct(TemplateRenderer $renderer, $debug = false)
+    public function __construct(ErrorResponseGeneratorInterface $errorResponseGenerator)
     {
-        $this->debug = $debug;
-        $this->renderer = $renderer;
+        $this->errorResponseGenerator = $errorResponseGenerator;
     }
-
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         try {
             return $handler->handle($request);
         } catch (\Throwable $exception) {
-            $view = ($this->debug) ? "app/errors/debug" : "app/errors/500";
-            $response = new HtmlResponse($this->renderer->render($view, [
-                "exception" => $exception,
-                "request" => $request,
-                ]), $exception->getCode() ?: 500);
+            $response = $this->errorResponseGenerator->generate($request, $exception);
         }
         return $response;
     }
+
 }
