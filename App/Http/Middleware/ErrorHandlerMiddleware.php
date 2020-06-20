@@ -34,8 +34,14 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
             $response = new HtmlResponse($this->renderer->render($view, [
                 "exception" => $exception,
                 "request" => $request,
-                ]), $exception->getCode() ?: 500);
+                ]), self::getErrorCode($exception));
         }
         return $response;
+    }
+
+    private static function getErrorCode(\Throwable $e)
+    {
+        $code = $e->getCode();
+        return ($code >= 400 && $code < 600)? $code : 500;
     }
 }
