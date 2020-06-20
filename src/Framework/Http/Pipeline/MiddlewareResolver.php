@@ -4,17 +4,13 @@
 namespace Framework\Http\Pipeline;
 
 
-use Laminas\Stratigility\Middleware\CallableMiddlewareDecorator;
 use Laminas\Stratigility\Middleware\DoublePassMiddlewareDecorator;
 use Laminas\Stratigility\Middleware\RequestHandlerMiddleware;
 use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use ReflectionFunction;
 
 class MiddlewareResolver
 {
@@ -34,10 +30,7 @@ class MiddlewareResolver
             return $this->createPipe($handler);
         }
         if (is_string($handler) && $this->container->has($handler)) {
-            return new CallableMiddlewareDecorator(function (ServerRequestInterface $request, RequestHandlerInterface $next) use ($handler){
-                $middleware = $this->resolve($this->container->get($handler));
-                return $middleware->process($request, $next);
-            });
+            return new LazyLoadMiddlewareDecorator($this, $this->container, $handler);
         }
 
         if ($handler instanceof MiddlewareInterface) {
@@ -56,7 +49,7 @@ class MiddlewareResolver
                 if (count($params) === 3 && $params[2]->isCallable()) {
                     return new DoublePassMiddlewareDecorator($handler, $this->responsePrototype);
                 } elseif (count($params) === 2 && $params[1]->isCallable()) {
-                    return new CallableMiddlewareWrapper($handler, $this->responsePrototype);
+                    return new SinglePassMiddlewareDecorator($handler, $this->responsePrototype);
                 }
             }
         }
