@@ -11,6 +11,7 @@
   },
   "require-dev": {
     "ext-json": "*",
+    "filp/whoops": "^2.7",
     "phpunit/phpunit": "^9.1",
     "squizlabs/php_codesniffer": "^3.5"
   },

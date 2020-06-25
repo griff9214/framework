@@ -6,20 +6,19 @@ use Aura\Router\RouterContainer;
 use Framework\Http\Application;
 use Framework\Http\Middleware\ErrorHandler\ErrorResponseGeneratorInterface;
 use Framework\Http\Middleware\ErrorHandler\HtmlErrorResponseGenerator;
+use Framework\Http\Middleware\ErrorHandler\WhoopsErrorResponseGenerator;
 use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\AuraAdapter\AuraRouterAdapter;
 use Framework\Http\Router\Router;
 use Framework\Http\Router\RouterInterface;
-use Framework\Template\php\Extensions\PathExtension;
-use Framework\Template\php\PhpRenderer;
 use Framework\Template\TemplateRenderer;
-use Framework\Template\twig\TwigRenderer;
 use Laminas\Diactoros\Response;
 use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
-use Twig\Loader\FilesystemLoader;
-use Twig\Loader\LoaderInterface;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Run;
+use Whoops\RunInterface;
 
 return [
     'dependencies' => [
@@ -34,7 +33,7 @@ return [
                 RouterInterface::class => function (ContainerInterface $c) {
                     return $c->get(Router::class);
                 },
-                ResponseInterface::class => function(ContainerInterface $c){
+                ResponseInterface::class => function (ContainerInterface $c) {
                     return new Response();
                 },
                 Application::class => function (ContainerInterface $c) {
@@ -45,13 +44,32 @@ return [
                         $c->get(ResponseInterface::class),
                         $c->get(NotFoundHandler::class));
                 },
-                ErrorHandlerMiddleware::class => function(ContainerInterface $c){
+                ErrorHandlerMiddleware::class => function (ContainerInterface $c) {
                     return new ErrorHandlerMiddleware($c->get(ErrorResponseGeneratorInterface::class));
                 },
-                ErrorResponseGeneratorInterface::class => function(ContainerInterface $c){
-                    return new HtmlErrorResponseGenerator($c->get(TemplateRenderer::class), $c->get("params")["debug"]);
+                ErrorResponseGeneratorInterface::class => function (ContainerInterface $c) {
+                    if (!$c->get("params")["debug"]) {
+                        return new HtmlErrorResponseGenerator(
+                            $c->get(TemplateRenderer::class),
+                            [
+                                "404" => "app/errors/404",
+                                "500" => "app/errors/500",
+                                "error" => "app/errors/500",
+                            ],
+                            new Response()
+                        );
+                    } else {
+                        return $c->get(WhoopsErrorResponseGenerator::class);
+
+                    }
+                },
+                RunInterface::class => function (ContainerInterface $c) {
+                    $whoops = new Run;
+                    $whoops->pushHandler(new PrettyPageHandler);
+                    $whoops->register();
+                    return $whoops;
                 }
             ]
     ],
-    'debug' => false
+    'debug' => true
 ];
