@@ -18,7 +18,7 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
     /**
      * @var ErrorHandlerAddon[]
      */
-    private array $addons;
+    private array $addons = [];
 
     public function __construct(ErrorResponseGeneratorInterface $errorResponseGenerator)
     {

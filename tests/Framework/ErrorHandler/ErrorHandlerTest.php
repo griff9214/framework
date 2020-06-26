@@ -4,7 +4,7 @@ namespace Framework\ErrorHandler;
 
 use Framework\Http\Middleware\ErrorHandler\ErrorHandlerMiddleware;
 use Framework\Http\Middleware\ErrorHandler\ErrorHandlerUtils;
-use Framework\Http\Middleware\ErrorHandler\ErrorResponseGeneratorInterface;
+use Framework\Http\Middleware\ErrorHandler\ErrorResponseGenerator\ErrorResponseGeneratorInterface;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\ServerRequest;
 use PHPUnit\Framework\TestCase;
