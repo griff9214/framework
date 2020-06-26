@@ -1,10 +1,9 @@
 <?php
 
 
-namespace App\Http\Middleware;
+namespace Framework\Http\Middleware\ErrorHandler;
 
 
-use Framework\Http\Middleware\ErrorHandler\ErrorResponseGeneratorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;

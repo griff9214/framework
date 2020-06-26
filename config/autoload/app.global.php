@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Action\NotFoundHandler;
-use App\Http\Middleware\ErrorHandlerMiddleware;
 use Aura\Router\RouterContainer;
 use Framework\Http\Application;
+use Framework\Http\Middleware\ErrorHandler\ErrorHandlerMiddleware;
 use Framework\Http\Middleware\ErrorHandler\ErrorResponseGeneratorInterface;
 use Framework\Http\Middleware\ErrorHandler\HtmlErrorResponseGenerator;
 use Framework\Http\Middleware\ErrorHandler\WhoopsErrorResponseGenerator;
@@ -60,7 +60,6 @@ return [
                         );
                     } else {
                         return $c->get(WhoopsErrorResponseGenerator::class);
-
                     }
                 },
                 RunInterface::class => function (ContainerInterface $c) {

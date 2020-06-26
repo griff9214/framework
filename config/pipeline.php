@@ -4,10 +4,10 @@
 use App\Http\Middleware\BasicAuthMiddleware;
 use App\Http\Middleware\BlogUnavailable;
 use App\Http\Middleware\DeveloperMiddleware;
-use App\Http\Middleware\ErrorHandlerMiddleware;
 use App\Http\Middleware\TimerMiddleware;
 use Framework\Http\Application;
 use Framework\Http\Middleware\DispatchMiddleware;
+use Framework\Http\Middleware\ErrorHandler\ErrorHandlerMiddleware;
 use Framework\Http\Middleware\RouteMiddleware;
 
 
