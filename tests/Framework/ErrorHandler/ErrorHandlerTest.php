@@ -1,13 +1,13 @@
 <?php
 
-namespace Framework\Http;
+namespace Framework\ErrorHandler;
 
 use Framework\Http\Middleware\ErrorHandler\ErrorHandlerMiddleware;
+use Framework\Http\Middleware\ErrorHandler\ErrorHandlerUtils;
 use Framework\Http\Middleware\ErrorHandler\ErrorResponseGeneratorInterface;
-use Framework\Http\Middleware\ErrorHandler\ErrorResponseUtils;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\ServerRequest;
-use Monolog\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -44,7 +44,7 @@ class DummyErrorResponseGenerator implements ErrorResponseGeneratorInterface
 
     public function generate(ServerRequestInterface $request, \Throwable $exception): ResponseInterface
     {
-        return new HtmlResponse($exception->getMessage(), ErrorResponseUtils::getErrorCode($exception));
+        return new HtmlResponse($exception->getMessage(), ErrorHandlerUtils::getErrorCode($exception));
     }
 }
 

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Framework\Http\Middleware\ErrorHandler;
+namespace Framework\Http\Middleware\ErrorHandler\ErrorResponseGenerator;
 
 
 use Laminas\Stratigility\Utils;

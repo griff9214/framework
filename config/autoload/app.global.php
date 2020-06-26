@@ -3,10 +3,11 @@
 use App\Http\Action\NotFoundHandler;
 use Aura\Router\RouterContainer;
 use Framework\Http\Application;
+use Framework\Http\Middleware\ErrorHandler\Addons\ErrorHandlerLoggerAddon;
 use Framework\Http\Middleware\ErrorHandler\ErrorHandlerMiddleware;
-use Framework\Http\Middleware\ErrorHandler\ErrorResponseGeneratorInterface;
-use Framework\Http\Middleware\ErrorHandler\HtmlErrorResponseGenerator;
-use Framework\Http\Middleware\ErrorHandler\WhoopsErrorResponseGenerator;
+use Framework\Http\Middleware\ErrorHandler\ErrorResponseGenerator\ErrorResponseGeneratorInterface;
+use Framework\Http\Middleware\ErrorHandler\ErrorResponseGenerator\HtmlErrorResponseGenerator;
+use Framework\Http\Middleware\ErrorHandler\ErrorResponseGenerator\WhoopsErrorResponseGenerator;
 use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\AuraAdapter\AuraRouterAdapter;
 use Framework\Http\Router\Router;
@@ -14,8 +15,11 @@ use Framework\Http\Router\RouterInterface;
 use Framework\Template\TemplateRenderer;
 use Laminas\Diactoros\Response;
 use Laminas\Stratigility\MiddlewarePipe;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 use Whoops\RunInterface;
@@ -45,7 +49,12 @@ return [
                         $c->get(NotFoundHandler::class));
                 },
                 ErrorHandlerMiddleware::class => function (ContainerInterface $c) {
-                    return new ErrorHandlerMiddleware($c->get(ErrorResponseGeneratorInterface::class));
+                    /**
+                     * @var ErrorHandlerMiddleware $errorHandler
+                     */
+                    $errorHandler = new ErrorHandlerMiddleware($c->get(ErrorResponseGeneratorInterface::class));
+                    $errorHandler->registerAddon($c->get(ErrorHandlerLoggerAddon::class));
+                    return $errorHandler;
                 },
                 ErrorResponseGeneratorInterface::class => function (ContainerInterface $c) {
                     if (!$c->get("params")["debug"]) {
@@ -56,17 +65,26 @@ return [
                                 "500" => "app/errors/500",
                                 "error" => "app/errors/500",
                             ],
-                            new Response()
+                            $c->get(ResponseInterface::class)
                         );
                     } else {
                         return $c->get(WhoopsErrorResponseGenerator::class);
                     }
                 },
                 RunInterface::class => function (ContainerInterface $c) {
-                    $whoops = new Run;
-                    $whoops->pushHandler(new PrettyPageHandler);
+                    $whoops = new Run();
+                    $whoops->pushHandler(new PrettyPageHandler());
                     $whoops->register();
                     return $whoops;
+                },
+                LoggerInterface::class => function (ContainerInterface $c) {
+                    $logger = new Logger("App");
+                    $logger->pushHandler(
+                        new StreamHandler(
+                            "var/log/app.log",
+                            $c->get("params")['debug'] ? Logger::DEBUG : Logger::WARNING
+                        ));
+                    return $logger;
                 }
             ]
     ],

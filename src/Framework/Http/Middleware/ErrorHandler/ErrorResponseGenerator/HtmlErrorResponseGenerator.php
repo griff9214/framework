@@ -1,11 +1,10 @@
 <?php
 
 
-namespace Framework\Http\Middleware\ErrorHandler;
+namespace Framework\Http\Middleware\ErrorHandler\ErrorResponseGenerator;
 
 
 use Framework\Template\TemplateRenderer;
-use Laminas\Diactoros\Response;
 use Laminas\Stratigility\Utils;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

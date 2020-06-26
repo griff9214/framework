@@ -1,9 +1,10 @@
 <?php
 
 
-namespace Framework\Http\Middleware\ErrorHandler;
+namespace Framework\Http\Middleware\ErrorHandler\ErrorResponseGenerator;
 
 
+use Framework\Http\Middleware\ErrorHandler\ErrorHandlerUtils;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -17,7 +18,7 @@ class JsonErrorResponseGenerator implements ErrorResponseGeneratorInterface
             [
                 'request' => $request,
                 'exception'=>$exception->getMessage()
-            ], ErrorResponseUtils::getErrorCode($exception)
+            ], ErrorHandlerUtils::getErrorCode($exception)
         );
     }
 }

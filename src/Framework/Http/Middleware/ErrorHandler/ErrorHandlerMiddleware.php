@@ -4,6 +4,8 @@
 namespace Framework\Http\Middleware\ErrorHandler;
 
 
+use Framework\Http\Middleware\ErrorHandler\Addons\ErrorHandlerAddon;
+use Framework\Http\Middleware\ErrorHandler\ErrorResponseGenerator\ErrorResponseGeneratorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -13,6 +15,10 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
 {
 
     private ErrorResponseGeneratorInterface $errorResponseGenerator;
+    /**
+     * @var ErrorHandlerAddon[]
+     */
+    private array $addons;
 
     public function __construct(ErrorResponseGeneratorInterface $errorResponseGenerator)
     {
@@ -24,9 +30,17 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
         try {
             return $handler->handle($request);
         } catch (\Throwable $exception) {
+            foreach ($this->addons as $addon) {
+                $addon->exec($exception, $request);
+            }
             $response = $this->errorResponseGenerator->generate($request, $exception);
         }
         return $response;
+    }
+
+    public function registerAddon(ErrorHandlerAddon $addon)
+    {
+        $this->addons[] = $addon;
     }
 
 }
