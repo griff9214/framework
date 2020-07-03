@@ -2,7 +2,6 @@
 
 use Framework\Http\Middleware\ErrorHandler\ErrorResponseGenerator\ErrorResponseGeneratorInterface;
 use Framework\Http\Middleware\ErrorHandler\ErrorResponseGenerator\WhoopsErrorResponseGenerator;
-use Laminas\ConfigAggregator\ConfigAggregator;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -10,10 +9,10 @@ return [
         'factories' =>
             [
                 ErrorResponseGeneratorInterface::class => function (ContainerInterface $c) {
-                    return $c->get(WhoopsErrorResponseGenerator::class);
+                        return $c->get(WhoopsErrorResponseGenerator::class);
                 },
             ]
     ],
     'debug' => true,
-    ConfigAggregator::ENABLE_CACHE => false
+    ConfigAggregator::ENABLE_CACHE => true
 ];
