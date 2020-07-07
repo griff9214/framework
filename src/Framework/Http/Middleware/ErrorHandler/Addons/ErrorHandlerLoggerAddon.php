@@ -5,7 +5,6 @@ namespace Framework\Http\Middleware\ErrorHandler\Addons;
 
 
 use Framework\Http\Middleware\ErrorHandler\ErrorHandlerUtils;
-use Monolog\Logger;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 

@@ -2,6 +2,7 @@
 
 use Framework\Http\Middleware\ErrorHandler\ErrorResponseGenerator\ErrorResponseGeneratorInterface;
 use Framework\Http\Middleware\ErrorHandler\ErrorResponseGenerator\WhoopsErrorResponseGenerator;
+use Laminas\ConfigAggregator\ConfigAggregator;
 use Psr\Container\ContainerInterface;
 
 return [

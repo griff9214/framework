@@ -1,6 +1,7 @@
 <?php
 
 use Framework\Container\Factories\AppFactory;
+use Framework\Container\Factories\ContainerInterfaceFactory;
 use Framework\Container\Factories\ErrorHandler\ErrorHandlerMiddlewareFactory;
 use Framework\Container\Factories\ErrorHandler\ErrorResponseGeneratorFactory;
 use Framework\Container\Factories\ErrorHandler\Whoops\RunInterfaceFactory;
@@ -23,9 +24,7 @@ return [
     'dependencies' => [
         'factories' =>
             [
-                ContainerInterface::class => function (ContainerInterface $c) {
-                    return $c;
-                },
+                ContainerInterface::class => ContainerInterfaceFactory::class,
                 Router::class => RouterFactory::class,
                 RouterInterface::class => RouterInterfaceFactory::class,
                 ResponseInterface::class => ResponseInterfaceFactory::class,
