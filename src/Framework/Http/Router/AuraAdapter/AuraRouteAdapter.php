@@ -1,15 +1,12 @@
 <?php
 
-
 namespace Framework\Http\Router\AuraAdapter;
-
 
 use Aura\Router\Route;
 use Framework\Http\Router\RouteInterface;
 
 class AuraRouteAdapter implements RouteInterface
 {
-
     private Route $route;
 
     public function __construct(Route $route)
@@ -35,5 +32,5 @@ class AuraRouteAdapter implements RouteInterface
     public function getMethods(): array
     {
         return $this->route->allows;
-    }
-}
+    } //end getMethods()
+} //end class

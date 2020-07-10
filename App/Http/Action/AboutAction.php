@@ -1,12 +1,9 @@
 <?php
 
-
 namespace App\Http\Action;
 
-
-use Framework\Template\php\PhpRenderer;
+use Exception;
 use Framework\Template\TemplateRenderer;
-use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -20,11 +17,9 @@ class AboutAction implements RequestHandlerInterface
         $this->templateRenderer = $templateRenderer;
     }
 
-
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        throw new \Exception("sdfsdfsdf", 42);
+        throw new Exception("sdfsdfsdf", 42);
         //return new HtmlResponse($this->templateRenderer->render("app/about", []));
-
     }
 }

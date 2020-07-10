@@ -1,10 +1,8 @@
 <?php
 
-
 namespace App\Http\Action\Cabinet;
 
 use App\Http\Middleware\BasicAuthMiddleware;
-use Framework\Template\php\PhpRenderer;
 use Framework\Template\TemplateRenderer;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -25,6 +23,4 @@ class IndexAction implements RequestHandlerInterface
         $name = $request->getAttribute(BasicAuthMiddleware::ATTRIBUTE) ?: "Guest";
         return new HtmlResponse($this->templateRenderer->render("app/cabinet/cabinetIndex", ['name' => $name]));
     }
-
-
 }

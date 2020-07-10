@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Http\Middleware;
-
 
 use Framework\Http\Router\Exceptions\RequestNotMatchedException;
 use Framework\Http\Router\RouterInterface;
@@ -14,6 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 class RouteMiddleware implements MiddlewareInterface
 {
     const REQUEST_ROUTE_PARAM = "resultRoute";
+
     private RouterInterface $router;
 
     public function __construct(RouterInterface $router)
@@ -29,5 +28,5 @@ class RouteMiddleware implements MiddlewareInterface
         } catch (RequestNotMatchedException $e) {
             return $handler->handle($request);
         }
-    }
-}
+    } //end process()
+} //end class

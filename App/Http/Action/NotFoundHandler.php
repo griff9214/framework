@@ -1,10 +1,7 @@
 <?php
 
-
 namespace App\Http\Action;
 
-
-use Framework\Template\php\PhpRenderer;
 use Framework\Template\TemplateRenderer;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -22,7 +19,6 @@ class NotFoundHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-
         return new HtmlResponse($this->renderer->render("app/errors/404", ["request" => $request]), 404);
     }
 }

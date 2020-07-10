@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Http\Pipeline;
-
 
 use Laminas\Stratigility\Middleware\DoublePassMiddlewareDecorator;
 use Laminas\Stratigility\Middleware\RequestHandlerMiddleware;
@@ -11,16 +9,21 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use ReflectionObject;
+
+use function count;
+use function is_array;
+use function is_object;
+use function is_string;
 
 class MiddlewareResolver
 {
-
     private ContainerInterface $container;
     private ResponseInterface $responsePrototype;
 
     public function __construct(ContainerInterface $container, ResponseInterface $responsePrototype)
     {
-        $this->container = $container;
+        $this->container         = $container;
         $this->responsePrototype = $responsePrototype;
     }
 
@@ -42,7 +45,7 @@ class MiddlewareResolver
         }
 
         if (is_object($handler)) {
-            $reflection = new \ReflectionObject($handler);
+            $reflection = new ReflectionObject($handler);
             if ($reflection->hasMethod("__invoke")) {
                 $method = $reflection->getMethod("__invoke");
                 $params = $method->getParameters();
@@ -64,5 +67,4 @@ class MiddlewareResolver
         }
         return $pipe;
     }
-
 }

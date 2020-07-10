@@ -1,28 +1,45 @@
 <?php
 
-
 namespace Framework\Template\php;
 
-
+use Exception;
 use Framework\Template\TemplateRenderer;
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
+use SplStack;
+use Throwable;
+
+use function array_key_exists;
+use function call_user_func_array;
+use function extract;
+use function htmlspecialchars;
+use function ob_end_clean;
+use function ob_get_clean;
+use function ob_get_level;
+use function ob_start;
+
+use const ENT_QUOTES;
+use const ENT_SUBSTITUTE;
+use const EXTR_OVERWRITE;
 
 class PhpRenderer implements TemplateRenderer
 {
     private string $path;
+
     private array $params = [];
-    private $extends = null;
+
+    private $extends;
+
     private array $blocks;
-    private \SplStack $blockNames;
-    /**
-     * @var Extension[]
-     */
+
+    private SplStack $blockNames;
+
+    /** @var Extension[] */
     private array $extensions = [];
 
     public function __construct(string $path)
     {
-        $this->path = $path;
-        $this->blockNames = new \SplStack();
+        $this->path       = $path;
+        $this->blockNames = new SplStack();
     }
 
     public function addExtension(Extension $extension)
@@ -43,7 +60,8 @@ class PhpRenderer implements TemplateRenderer
                 }
             }
         }
-        throw new \InvalidArgumentException("Udefined function $name");
+
+        throw new InvalidArgumentException("Udefined function $name");
     }
 
     public function render($viewName, array $params = []): string
@@ -51,20 +69,22 @@ class PhpRenderer implements TemplateRenderer
         try {
             $level = ob_get_level();
             extract($params, EXTR_OVERWRITE);
-//        $this->params = [];
+            // $this->params = [];
             $this->extends = null;
             ob_start();
-            require $this->path . "/$viewName.php";
+            include $this->path . "/$viewName.php";
             $content = ob_get_clean();
-            if (!empty($this->extends)) {
+            if (! empty($this->extends)) {
                 return $this->render($this->extends);
             }
-        } catch (\Throwable|\Exception $e) {
+        } catch (Throwable | Exception $e) {
             while (ob_get_level() > $level) {
                 ob_end_clean();
             }
+
             throw $e;
         }
+
         return $content;
     }
 
@@ -73,6 +93,7 @@ class PhpRenderer implements TemplateRenderer
         if ($this->hasBlock($blockName)) {
             return false;
         }
+
         $this->beginBlock($blockName);
         return true;
     }
@@ -90,7 +111,7 @@ class PhpRenderer implements TemplateRenderer
 
     public function endBlock(string $blockName = "")
     {
-        $blockName = $this->blockNames->pop();
+        $blockName                = $this->blockNames->pop();
         $this->blocks[$blockName] = ob_get_clean();
     }
 
@@ -107,5 +128,5 @@ class PhpRenderer implements TemplateRenderer
     public function encode(string $html)
     {
         return htmlspecialchars($html, ENT_SUBSTITUTE | ENT_QUOTES);
-    }
-}
+    } //end encode()
+} //end class

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Http\Pipeline;
-
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,5 +18,5 @@ class HandlerWrapper
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
         return $this->handler->handle($request);
-    }
-}
+    } //end __invoke()
+} //end class

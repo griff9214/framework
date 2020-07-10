@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Container\Factories;
-
 
 use App\Http\Action\NotFoundHandler;
 use Framework\Http\Application;
@@ -14,7 +12,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class AppFactory implements FactoryInterface
 {
-
     public function __invoke(ContainerInterface $c)
     {
         return new Application(
@@ -22,6 +19,7 @@ class AppFactory implements FactoryInterface
             $c->get(MiddlewarePipe::class),
             $c->get(MiddlewareResolver::class),
             $c->get(ResponseInterface::class),
-            $c->get(NotFoundHandler::class));
-    }
-}
+            $c->get(NotFoundHandler::class)
+        );
+    } //end __invoke()
+} //end class

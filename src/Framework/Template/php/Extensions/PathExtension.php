@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Template\php\Extensions;
-
 
 use Framework\Http\Router\RouterInterface;
 use Framework\Template\php\Extension;
@@ -22,7 +20,7 @@ class PathExtension extends Extension
     {
         return [
             new SimpleFunction("path", [$this, "getPath"], true),
-            new SimpleFunction("url", [$this, "getUrl"])
+            new SimpleFunction("url", [$this, "getUrl"]),
         ];
     }
 
@@ -35,6 +33,5 @@ class PathExtension extends Extension
     {
         $host = $_SERVER["HTTP_HOST"];
         return "http://" . $host . $this->router->generate($routeName, $params);
-    }
-
-}
+    } //end getUrl()
+} //end class

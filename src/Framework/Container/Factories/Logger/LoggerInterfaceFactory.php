@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Container\Factories\Logger;
-
 
 use Framework\Container\Factories\FactoryInterface;
 use Monolog\Handler\StreamHandler;
@@ -11,7 +9,6 @@ use Psr\Container\ContainerInterface;
 
 class LoggerInterfaceFactory implements FactoryInterface
 {
-
     public function __invoke(ContainerInterface $c)
     {
         $logger = new Logger("App");
@@ -19,7 +16,8 @@ class LoggerInterfaceFactory implements FactoryInterface
             new StreamHandler(
                 "var/log/app.log",
                 $c->get("params")['debug'] ? Logger::DEBUG : Logger::WARNING
-            ));
+            )
+        );
         return $logger;
-    }
-}
+    } //end __invoke()
+} //end class

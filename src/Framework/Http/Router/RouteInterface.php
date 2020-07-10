@@ -11,4 +11,4 @@ interface RouteInterface
     public function getPattern(): string;
 
     public function getMethods(): array;
-}
+} //end interface

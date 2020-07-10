@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Http\Middleware;
-
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,13 +20,17 @@ class ResponseLoggerMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        $code = $response->getStatusCode();
-        if ($code>=400 && $code <600){
-            $this->logger->error($response->getReasonPhrase(),[
-                "method"=>$request->getMethod(),
-                "uri"=>$request->getUri()->getPath(),
-            ]);
+        $code     = $response->getStatusCode();
+        if ($code >= 400 && $code < 600) {
+            $this->logger->error(
+                $response->getReasonPhrase(),
+                [
+                    "method" => $request->getMethod(),
+                    "uri"    => $request->getUri()->getPath(),
+                ]
+            );
         }
+
         return $response;
-    }
-}
+    } //end process()
+} //end class

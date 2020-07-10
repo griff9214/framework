@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Middleware;
-
 
 use Framework\Http\Middleware\RouteMiddleware;
 use Framework\Http\Router\RouteInterface;
@@ -19,10 +17,9 @@ class BlogUnavailable implements MiddlewareInterface
         /**
          * @var RouteInterface $route
          */
-        if (!empty($route = $request->getAttribute(RouteMiddleware::REQUEST_ROUTE_PARAM))) {
+        if (! empty($route = $request->getAttribute(RouteMiddleware::REQUEST_ROUTE_PARAM))) {
             return new HtmlResponse("Blog is not available at this moment", 403);
         }
         return $handler->handle($request);
     }
-
 }

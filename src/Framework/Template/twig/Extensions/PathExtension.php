@@ -1,11 +1,8 @@
 <?php
 
-
 namespace Framework\Template\twig\Extensions;
 
-
 use Framework\Http\Router\RouterInterface;
-use Framework\Template\TemplateRenderer;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -23,7 +20,7 @@ class PathExtension extends AbstractExtension
     {
         return [
             new TwigFunction("path", [$this, "getPath"], ['needs_environment' => true]),
-            new TwigFunction("url", [$this, "getUrl"])
+            new TwigFunction("url", [$this, "getUrl"]),
         ];
     }
 
@@ -36,6 +33,5 @@ class PathExtension extends AbstractExtension
     {
         $host = $_SERVER["HTTP_HOST"];
         return "http://" . $host . $this->router->generate($routeName, $params);
-    }
-
-}
+    } //end getUrl()
+} //end class

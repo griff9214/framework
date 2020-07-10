@@ -13,4 +13,4 @@ interface RouterInterface
     public function bindParams(ServerRequestInterface $request, array $matches): ServerRequestInterface;
 
     public function addRoute(RouteDataObject $routeData);
-}
+} //end interface

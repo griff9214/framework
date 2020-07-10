@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Template\php;
-
 
 abstract class Extension
 {
@@ -13,8 +11,9 @@ abstract class Extension
     {
         return [];
     }
+
     public function getFilters(): array
     {
         return [];
-    }
-}
+    } //end getFilters()
+} //end class

@@ -2,6 +2,7 @@
 
 namespace Framework\ErrorHandler;
 
+use Exception;
 use Framework\Http\Middleware\ErrorHandler\ErrorHandlerMiddleware;
 use Framework\Http\Middleware\ErrorHandler\ErrorHandlerUtils;
 use Framework\Http\Middleware\ErrorHandler\ErrorResponseGenerator\ErrorResponseGeneratorInterface;
@@ -11,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Throwable;
 
 class ErrorHandlerTest extends TestCase
 {
@@ -36,13 +38,11 @@ class ErrorHandlerTest extends TestCase
         self::assertEquals(404, $result->getStatusCode());
         self::assertEquals("Exception", $result->getBody()->getContents());
     }
-
 }
 
 class DummyErrorResponseGenerator implements ErrorResponseGeneratorInterface
 {
-
-    public function generate(ServerRequestInterface $request, \Throwable $exception): ResponseInterface
+    public function generate(ServerRequestInterface $request, Throwable $exception): ResponseInterface
     {
         return new HtmlResponse($exception->getMessage(), ErrorHandlerUtils::getErrorCode($exception));
     }
@@ -60,6 +60,6 @@ class ExceptionHandler implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        throw new \Exception("Exception", 404);
+        throw new Exception("Exception", 404);
     }
 }

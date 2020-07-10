@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Http;
-
 
 use Aura\Router\RouterContainer;
 use Framework\Http\Router\AuraAdapter\AuraRouterAdapter;
@@ -15,32 +13,31 @@ class AuraRouterAdapterTest extends TestCase
 {
     public function testCorrectMethod()
     {
-        $aura = new RouterContainer();
+        $aura   = new RouterContainer();
         $routes = $aura->getMap();
         $routes->get($nameGet = "blog-get", "/blog", $actionGet = "get-blog");
         $routes->post($namePost = "blog-post", "/blog", $actionPost = "post-blog");
         $router = new AuraRouterAdapter($aura);
 
-
         $requestGet = $this->buildRequest("/blog", "GET");
-        $result = $router->match($requestGet);
+        $result     = $router->match($requestGet);
         self::assertEquals($actionGet, $result->getHandler());
         self::assertEquals($nameGet, $result->getName());
 
         $requestPost = $this->buildRequest("/blog", "POST");
-        $result = $router->match($requestPost);
+        $result      = $router->match($requestPost);
         self::assertEquals($actionPost, $result->getHandler());
         self::assertEquals($namePost, $result->getName());
     }
 
     public function testGenerate()
     {
-        $aura = new RouterContainer();
+        $aura   = new RouterContainer();
         $routes = $aura->getMap();
         $routes->post("blog-post", "/blog/{id}/{slug}", $action = function () {
             echo "hello";
         })->tokens(["id" => "\d+", "slug" => "[a-z]{5}"]);
-        $router = new AuraRouterAdapter($aura);
+        $router                                                 = new AuraRouterAdapter($aura);
 
         self::assertEquals("/blog/20/abcde", $router->generate("blog-post", ["id" => "20", "slug" => "abcde"]));
     }

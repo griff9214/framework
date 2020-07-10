@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Http;
-
 
 use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\RouteDataObject;
@@ -10,25 +8,29 @@ use Framework\Http\Router\RouterInterface;
 use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+
 use function Laminas\Stratigility\path;
 
 class Application
 {
     private RequestHandlerInterface $defaultAction;
+
     private MiddlewarePipe $middlewarePipe;
+
     private ResponseInterface $responsePrototype;
+
     private RouterInterface $router;
+
     private MiddlewareResolver $resolver;
 
     public function __construct(RouterInterface $router, MiddlewarePipe $middlewarePipe, MiddlewareResolver $resolver, ResponseInterface $responsePrototype, RequestHandlerInterface $defaultAction)
     {
-        $this->defaultAction = $defaultAction;
-        $this->middlewarePipe = $middlewarePipe;
+        $this->defaultAction     = $defaultAction;
+        $this->middlewarePipe    = $middlewarePipe;
         $this->responsePrototype = $responsePrototype;
-        $this->router = $router;
-        $this->resolver = $resolver;
+        $this->router            = $router;
+        $this->resolver          = $resolver;
     }
 
     public function pipe($pathOrHandler, $handler = null)
@@ -87,6 +89,5 @@ class Application
     {
         $data = new RouteDataObject($name, $path, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'UPDATE'], $handler, $params);
         $this->router->addRoute($data);
-    }
-
-}
+    } //end any()
+} //end class

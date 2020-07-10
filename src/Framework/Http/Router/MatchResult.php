@@ -1,19 +1,16 @@
 <?php
 
-
 namespace Framework\Http\Router;
-
-
-use Framework\Http\Router\Route;
 
 class MatchResult
 {
     protected Route $route;
+
     protected array $params = [];
 
     public function __construct(Route $route, array $params = [])
     {
-        $this->route = $route;
+        $this->route  = $route;
         $this->params = $params;
     }
 
@@ -25,7 +22,5 @@ class MatchResult
     public function getParams(): array
     {
         return $this->params;
-    }
-
-
-}
+    } //end getParams()
+} //end class

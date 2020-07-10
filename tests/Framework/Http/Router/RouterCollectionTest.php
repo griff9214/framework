@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Http;
-
 
 use Framework\Http\Router\RouterCollection;
 use PHPUnit\Framework\TestCase;
@@ -23,6 +21,7 @@ class RouterCollectionTest extends TestCase
         self::assertEquals($actionPost, $collection->getRoutes()[1]->getHandler());
         self::assertEquals(["POST"], $collection->getRoutes()[1]->getMethods());
     }
+
     public function testAny()
     {
         $collection = new RouterCollection();

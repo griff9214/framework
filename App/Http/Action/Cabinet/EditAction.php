@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Action\Cabinet;
-
 
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;

@@ -1,10 +1,9 @@
 <?php
 
-
 namespace Framework\Container;
 
-
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class ContainerTest extends TestCase
 {
@@ -12,8 +11,10 @@ class ContainerTest extends TestCase
     {
         $container = new Container([]);
         $container->set($id = "id", $value = "value");
-        $container->set($id2 = "id2", $value2 = function (Container $container){return 1;});
-        $container->set($id3 = "id3", $value3 = new \stdClass());
+        $container->set($id2 = "id2", $value2 = function (Container $container) {
+            return 1;
+        });
+        $container->set($id3 = "id3", $value3 = new stdClass());
 
         self::assertEquals($value, $container->get($id));
         self::assertEquals($value2($container), $container->get($id2));
@@ -22,8 +23,10 @@ class ContainerTest extends TestCase
 
     public function testSame()
     {
-        $container = new Container([]);
-        $container->set($id = "id", $value3 = function (Container $container){return new \stdClass();});
+        $container          = new Container([]);
+        $container->set($id = "id", $value3 = function (Container $container) {
+            return new stdClass();
+        });
         self::assertSame($container->get($id), $container->get($id));
     }
 
@@ -31,18 +34,18 @@ class ContainerTest extends TestCase
     {
         $c = new Container([]);
 
-        self::assertNotNull($value1 = $c->get(\StdClass::class));
-        self::assertNotNull($value2 = $c->get(\StdClass::class));
+        self::assertNotNull($value1 = $c->get(stdClass::class));
+        self::assertNotNull($value2 = $c->get(stdClass::class));
 
-        self::assertInstanceOf(\StdClass::class, $value1);
-        self::assertInstanceOf(\StdClass::class, $value2);
+        self::assertInstanceOf(stdClass::class, $value1);
+        self::assertInstanceOf(stdClass::class, $value2);
 
         self::assertSame($value1, $value2);
     }
 
     public function testAutoWiring()
     {
-        $c = new Container([]);
+        $c     = new Container([]);
         $outer = $c->get(Outer::class);
 
         self::assertInstanceOf(Outer::class, $outer);
@@ -63,14 +66,11 @@ class ContainerTest extends TestCase
         self::assertInstanceOf(Inner::class, $outer->middle->inner);
         self::assertEquals([], $outer->array);
         self::assertEquals(5, $outer->a);
-
     }
-
 }
 
 class Outer
 {
-
     public Middle $middle;
     private int $a;
 
@@ -81,7 +81,6 @@ class Outer
 }
 class OuterWithParams
 {
-
     public Middle $middle;
     public int $a;
     public array $array;
@@ -89,22 +88,21 @@ class OuterWithParams
     public function __construct(Middle $middle, array $array, int $a = 5)
     {
         $this->middle = $middle;
-        $this->array = $array;
-        $this->a = $a;
+        $this->array  = $array;
+        $this->a      = $a;
     }
 }
 
-class Middle{
-
+class Middle
+{
     public Inner $inner;
 
     public function __construct(Inner $inner)
     {
         $this->inner = $inner;
     }
-
 }
 
-class Inner{
-
+class Inner
+{
 }

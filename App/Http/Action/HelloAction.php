@@ -1,15 +1,12 @@
 <?php
 
-
 namespace App\Http\Action;
 
-use Framework\Template\php\PhpRenderer;
 use Framework\Template\TemplateRenderer;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Twig\Environment;
 
 class HelloAction implements RequestHandlerInterface
 {
@@ -25,5 +22,4 @@ class HelloAction implements RequestHandlerInterface
         $name = $request->getQueryParams()['name'] ?? 'Guest';
         return new HtmlResponse($this->templateRenderer->render("app/hello", ['name' => $name]));
     }
-
 }

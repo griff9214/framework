@@ -1,11 +1,8 @@
 <?php
 
-
 namespace App\Http\Action\Blog;
 
-
 use App\ReadModel\PostReadModel;
-use Framework\Template\php\PhpRenderer;
 use Framework\Template\TemplateRenderer;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -20,7 +17,7 @@ class IndexAction implements RequestHandlerInterface
     public function __construct(PostReadModel $postRepository, TemplateRenderer $renderer)
     {
         $this->postRepository = $postRepository;
-        $this->renderer = $renderer;
+        $this->renderer       = $renderer;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -28,5 +25,4 @@ class IndexAction implements RequestHandlerInterface
         $posts = $this->postRepository->getAll();
         return new HtmlResponse($this->renderer->render("app/blog/index", ["posts" => $posts]));
     }
-
 }
