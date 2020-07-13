@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<ruleset name="Laminas Coding Standard">
+    <rule ref="./vendor/laminas/laminas-coding-standard/src/LaminasCodingStandard/ruleset.xml"/>
+
+    <arg name="colors"/>
+    <!-- Paths to check -->
+    <file>src</file>
+    <file>App</file>
+    <file>tests</file>
+</ruleset>
