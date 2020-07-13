@@ -4,17 +4,22 @@
 namespace App\Console;
 
 use Framework\Console\ConsoleInput;
+use Framework\Console\ConsoleOutput;
+use Framework\Helpers\FileSystem;
 
 class ClearCacheCommand
 {
-    protected array $paths = [
-        'ALL',
-        'var/cache/twig',
-        'var/cache/db',
-    ];
+    private array $paths;
 
-    public function execute(ConsoleInput $input): void
+    public function __construct(array $paths = [])
     {
+        $this->paths = $paths;
+        array_unshift($this->paths, 'ALL');
+    }
+
+    public function execute(ConsoleInput $input, ConsoleOutput $output): void
+    {
+
         $paths = $input->getArgument();
         if (empty($paths)) {
             $choose = $input->choose("Path is not specified. Please write manually:", $this->paths);
@@ -24,39 +29,15 @@ class ClearCacheCommand
                 $paths[] = $this->paths[$choose];
             }
         }
-        echo "Clearing cache:" . PHP_EOL;
+        $output->writeLn("<red>Clearing cache:</red>");
         foreach ($paths as $path) {
             if (file_exists($path)) {
                 echo "Removing: " . $path . PHP_EOL;
-                $this->delete($path);
+                FileSystem::delete($path);
             } else {
                 echo "Skipped " . $path . PHP_EOL;
             }
         }
-        echo "Done" . PHP_EOL;
-    }
-
-    private function delete($path): void
-    {
-        if (!file_exists($path)) {
-            throw new \RuntimeException("Undefined path " . $path);
-        }
-
-        if (is_dir($path)) {
-            $files = scandir($path);
-            foreach ($files as $file) {
-                if ($file !== "." && $file !== "..") {
-                    $this->delete($path . DIRECTORY_SEPARATOR . $file);
-                }
-            }
-            if (!rmdir($path)) {
-                throw new \RuntimeException("Unable to delete directory " . $path);
-            }
-
-        } else {
-            if (!unlink($path)) {
-                throw new \RuntimeException("Unable to delete file " . $path);
-            }
-        }
+        $output->writeLn("<green>Done!</green>");
     }
 }
