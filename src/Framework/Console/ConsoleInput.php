@@ -15,13 +15,18 @@ class ConsoleInput
         $this->argv = array_slice($argv, 1);
     }
 
-    public function getArgument(int $number = null): array
+    public function getCommandName(): string
+    {
+        return array_shift($this->argv);
+    }
+
+    public function getArgument(int $number = null)
     {
         if ($number === null) {
             return $this->argv;
         }
         if (isset($this->argv[$number])) {
-            return [$this->argv[$number]];
+            return $this->argv[$number];
         }
         throw new InvalidArgumentException("Argument with num $number is not specified");
     }
