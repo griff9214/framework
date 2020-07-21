@@ -2,14 +2,14 @@
 
 
 use App\Console\ClearCacheCommand;
-use Framework\Console\ConsoleApplication;
 use Framework\Container\Factories\Console\ClearCacheCommandFactory;
 use Framework\Container\Factories\Console\ConsoleApplicationFactory;
+use Symfony\Component\Console\Application;
 
 return [
     'dependencies' => [
         'factories' => [
-            ConsoleApplication::class => ConsoleApplicationFactory::class,
+            Application::class => ConsoleApplicationFactory::class,
             ClearCacheCommand::class => ClearCacheCommandFactory::class
         ]
     ],

@@ -3,12 +3,18 @@
 
 namespace App\Console;
 
-use Framework\Console\ConsoleCommand;
 use Framework\Console\ConsoleInput;
 use Framework\Console\ConsoleOutput;
 use Framework\Helpers\FileSystem;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\Question;
 
-class ClearCacheCommand extends ConsoleCommand
+class ClearCacheCommand extends Command
 {
     private array $paths;
 
@@ -21,22 +27,31 @@ class ClearCacheCommand extends ConsoleCommand
 
     public function configure()
     {
-        $this->setName("cache:clear");
-        $this->setDescription("Clear cache");
+        $this
+            ->setName("cache:clear")
+            ->setDescription('Clear cache')
+            ->setHelp('This command allows you to clear App cache folders...')
+            ->addArgument('paths', InputArgument::OPTIONAL, 'Paths to clear');
+            //->setHelperSet($this->getApplication()->getHelperSet());
     }
 
-    public function execute(ConsoleInput $input, ConsoleOutput $output): void
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $path = $input->getArgument();
+        $path = $input->getArgument('paths');
         if (empty($path)) {
-            $choose = $input->choose("Path is not specified. Please enter your choice:", $this->paths);
-            if ($choose === "0") {
+            /**
+             * @var QuestionHelper $helper
+             */
+            $helper = $this->getHelper("question");
+            $question = new ChoiceQuestion("What path do you want to clear?", $this->paths);
+            $choose = $helper->ask($input, $output, $question);
+            if ($choose === "ALL") {
                 $path = array_slice($this->paths, 1);
             } else {
-                $path[] = $this->paths[$choose];
+                $path[] = $choose;
             }
         }
-        $output->writeLn("<red>Clearing cache:</red>");
+        $output->writeLn("<fg=red>Clearing cache:</>");
         foreach ($path as $path) {
             if (file_exists($path)) {
                 echo "Removing: " . $path . PHP_EOL;
@@ -45,7 +60,8 @@ class ClearCacheCommand extends ConsoleCommand
                 echo "Skipped " . $path . PHP_EOL;
             }
         }
-        $output->writeLn("<green>Done!</green>");
+        $output->writeLn("<info>Done!</info>");
+        return Command::SUCCESS;
     }
 
 }
