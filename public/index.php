@@ -10,7 +10,9 @@ chdir(dirname(__DIR__));
 
 require_once "vendor/autoload.php";
 require_once "config/container.php";
-
+/**
+ * @var Application $app
+ */
 $app = $c->get(Application::class);
 require_once "config/pipeline.php";
 require_once "config/routes.php";

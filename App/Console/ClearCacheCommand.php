@@ -37,22 +37,23 @@ class ClearCacheCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $path = $input->getArgument('paths');
-        if (empty($path)) {
+        $paths = $input->getArgument('paths');
+        if (empty($paths)) {
             /**
-             * @var QuestionHelper $helper
+             * @var
+             * QuestionHelper $helper
              */
             $helper = $this->getHelper("question");
             $question = new ChoiceQuestion("What path do you want to clear?", $this->paths);
             $choose = $helper->ask($input, $output, $question);
             if ($choose === "ALL") {
-                $path = array_slice($this->paths, 1);
+                $paths = array_slice($this->paths, 1);
             } else {
-                $path[] = $choose;
+                $paths[] = $choose;
             }
         }
         $output->writeLn("<fg=red>Clearing cache:</>");
-        foreach ($path as $path) {
+        foreach ($paths as $path) {
             if (file_exists($path)) {
                 echo "Removing: " . $path . PHP_EOL;
                 FileSystem::delete($path);

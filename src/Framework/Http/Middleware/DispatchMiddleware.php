@@ -4,6 +4,7 @@ namespace Framework\Http\Middleware;
 
 use Framework\Http\Pipeline\CallableToHandlerWrapper;
 use Framework\Http\Pipeline\MiddlewareResolver;
+use Framework\Http\Router\RouteInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -19,7 +20,7 @@ class DispatchMiddleware
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $handler): ResponseInterface
     {
-        /*
+        /**
          * @var RouteInterface $route
          */
         if (! empty($route = $request->getAttribute(RouteMiddleware::REQUEST_ROUTE_PARAM))) {

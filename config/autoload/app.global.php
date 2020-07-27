@@ -2,6 +2,7 @@
 
 use Framework\Container\Factories\AppFactory;
 use Framework\Container\Factories\ContainerInterfaceFactory;
+use Framework\Container\Factories\db\PDOFactory;
 use Framework\Container\Factories\ErrorHandler\ErrorHandlerMiddlewareFactory;
 use Framework\Container\Factories\ErrorHandler\ErrorResponseGeneratorFactory;
 use Framework\Container\Factories\ErrorHandler\Whoops\RunInterfaceFactory;
@@ -25,14 +26,15 @@ return [
         'factories' =>
             [
                 ContainerInterface::class => ContainerInterfaceFactory::class,
-                Router::class => RouterFactory::class,
                 RouterInterface::class => RouterInterfaceFactory::class,
+                Router::class => RouterFactory::class,
                 ResponseInterface::class => ResponseInterfaceFactory::class,
                 Application::class => AppFactory::class,
                 ErrorHandlerMiddleware::class => ErrorHandlerMiddlewareFactory::class,
                 ErrorResponseGeneratorInterface::class => ErrorResponseGeneratorFactory::class,
                 RunInterface::class => RunInterfaceFactory::class,
-                LoggerInterface::class => LoggerInterfaceFactory::class
+                LoggerInterface::class => LoggerInterfaceFactory::class,
+                PDO::class => PDOFactory::class,
             ]
     ],
     'debug' => false,
