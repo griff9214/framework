@@ -24,4 +24,15 @@
             <div class="panel-body">{{ post.content }}</div>
         </div>
     {% endfor %}
+
+    {% if totalPages > 1 %}
+        <ul class="pagination">
+            {% for item in 1..totalPages %}
+                <li class="page-item {{ item == page ? 'active' : '' }}">
+                    <a href="{{ item == 1 ? url('blog-index') : url('blog-page', {'pageNumber':item}) }}" class="page-link">{{ item }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
 {% endblock %}

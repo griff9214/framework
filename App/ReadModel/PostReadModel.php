@@ -18,23 +18,28 @@ class PostReadModel
 
     public function __construct(PDO $pdo)
     {
-        $this->posts = [
-            new PostView(1, new DateTimeImmutable("2020-06-01"), "Title of post 1", "Content of post 1"),
-            new PostView(2, new DateTimeImmutable("2020-06-03"), "Title of post 2", "Content of post 2"),
-        ];
         $this->pdo = $pdo;
     }
 
     /**
      * @return PostView[]
      */
-    public function getAll(): array
+    public function getAll(int $offset, int $limit): array
     {
-        $query = $this->pdo->query("SELECT * FROM posts order by id desc");
+        $query = $this->pdo->prepare("SELECT * FROM posts ORDER BY date LIMIT :limit OFFSET :offset");
+        $query->bindParam('offset', $offset, PDO::PARAM_INT);
+        $query->bindParam('limit', $limit, PDO::PARAM_INT);
+        $query->execute();
         $rows = $query->fetchAll(PDO::FETCH_ASSOC);
         return array_map(function ($row) {
             return $this->hydratePost($row);
         }, $rows);
+    }
+
+    public function countPosts(): int
+    {
+        $stmt = $this->pdo->query("Select count(id) from posts");
+        return $stmt->fetch(PDO::FETCH_NUM)[0];
     }
 
     protected function hydratePost(array $row): PostView

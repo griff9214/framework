@@ -22,7 +22,18 @@ class IndexAction implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $posts = $this->postRepository->getAll();
-        return new HtmlResponse($this->renderer->render("app/blog/index", ["posts" => $posts]));
+        $pageNumber = $request->getAttribute('pageNumber') ?? 1;
+        $limit = 10;
+        $offset = ($pageNumber - 1) * $limit;
+
+        $totalPages = ceil($this->postRepository->countPosts() / $limit);
+
+
+        $posts = $this->postRepository->getAll($offset, $limit);
+        return new HtmlResponse($this->renderer->render("app/blog/index", [
+            "posts" => $posts,
+            'page' => $pageNumber,
+            'totalPages' => $totalPages,
+            ]));
     }
 }
