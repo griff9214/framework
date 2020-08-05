@@ -36,7 +36,7 @@ class PostReadModel
         }, $rows);
     }
 
-    public function countPosts(): int
+    public function getPostsCount(): int
     {
         $stmt = $this->pdo->query("Select count(id) from posts");
         return $stmt->fetch(PDO::FETCH_NUM)[0];
