@@ -4,14 +4,15 @@
 {% if totalPages > 1 %}
     <ul class="pagination">
         {% if current > 1 %}
-        <li class="page-item">
-            <a href="{{ current == 2 ? url('blog-index') : url('blog-page', {'pageNumber':current - 1}) }}" class="page-link">&laquo;</a>
-        </li>
+            <li class="page-item">
+                <a href="{{ current == 2 ? url(indexRoute) : url(pageRoute, {'pageNumber':current - 1}) }}"
+                   class="page-link">&laquo;</a>
+            </li>
         {% endif %}
         {% for item in 1..totalPages %}
             <li class="page-item {{ item == current ? 'active' : '' }}">
                 {% if item != current %}
-                    <a href="{{ item == 1 ? url('blog-index') : url('blog-page', {'pageNumber':item}) }}"
+                    <a href="{{ item == 1 ? url(indexRoute) : url(pageRoute, {'pageNumber':item}) }}"
                        class="page-link">{{ item }}</a>
                 {% else %}
                     <span class="page-link disabled">{{ item }}</span>
@@ -20,9 +21,9 @@
         {% endfor %}
 
         {% if current < totalPages %}
-        <li class="page-item">
-            <a href="{{ url('blog-page', {'pageNumber':current + 1}) }}" class="page-link">&raquo;</a>
-        </li>
+            <li class="page-item">
+                <a href="{{ url(pageRoute, {'pageNumber':current + 1}) }}" class="page-link">&raquo;</a>
+            </li>
         {% endif %}
     </ul>
 {% endif %}

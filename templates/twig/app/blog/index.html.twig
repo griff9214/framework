@@ -25,6 +25,10 @@
         </div>
     {% endfor %}
 
-    {% include 'app/blog/pagination.html.twig' with {'pager': pager} %}
+    {% include 'app/share/pagination.html.twig' with {
+        'pager': pager,
+        'indexRoute': "blog-index",
+        'pageRoute': "blog-page"
+    } %}
 
 {% endblock %}

@@ -15,9 +15,6 @@ return [
     ],
     'console_commands' =>[
         'cache:clear' => ClearCacheCommand::class,
-        'cache:clear1' => ClearCacheCommand::class,
-        'cache:clear2' => ClearCacheCommand::class,
-        'cache:clear3' => ClearCacheCommand::class
     ],
     'cache_paths' => [
         'var/cache/twig',
