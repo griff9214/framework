@@ -4,9 +4,13 @@
 namespace Framework\Container\Factories\Console;
 
 
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use Framework\Container\Factories\FactoryInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Helper\HelperSet;
 
 class ConsoleApplicationFactory implements FactoryInterface
 {

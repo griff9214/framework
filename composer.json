@@ -23,6 +23,7 @@
     "prod-mode": "rm config/autoload/dev.local.php"
   },
   "require": {
+    "ext-pdo": "*",
     "aura/router": "^3.1",
     "laminas/laminas-config-aggregator": "^1.2",
     "laminas/laminas-diactoros": "^2.3",
@@ -31,9 +32,9 @@
     "laminas/laminas-stratigility": "^3.2",
     "monolog/monolog": "^2.1",
     "psr/container": "^1.0",
+    "roave/psr-container-doctrine": "^2.2",
     "robmorgan/phinx": "^0.12.3",
     "symfony/console": "^5.1",
-    "twig/twig": "^3.0",
-    "ext-pdo": "*"
+    "twig/twig": "^3.0"
   }
 }

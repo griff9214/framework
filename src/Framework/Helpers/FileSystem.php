@@ -23,11 +23,9 @@ class FileSystem
                 throw new \RuntimeException("Unable to delete directory " . $path);
             }
 
-        } else {
-            if (!unlink($path)) {
-                throw new \RuntimeException("Unable to delete file " . $path);
-            }
+        } elseif (!unlink($path)) {
+            throw new \RuntimeException("Unable to delete file " . $path);
         }
-
     }
+
 }

@@ -5,5 +5,6 @@ use Laminas\ServiceManager\ServiceManager;
 
 $config = require_once "config/config.php";
 $c = new ServiceManager($config['dependencies']);
-$c->setService('params',$config);
+$c->setService('params', $config);
+$c->setService('config', $config);
 $c->addAbstractFactory(ReflectionBasedAbstractFactory::class);
