@@ -26,7 +26,7 @@ class PostReadModel
      */
     public function getAll(int $offset, int $limit): array
     {
-        $query = $this->pdo->prepare("SELECT * FROM posts ORDER BY date LIMIT :limit OFFSET :offset");
+        $query = $this->pdo->prepare("SELECT * FROM posts ORDER BY create_date LIMIT :limit OFFSET :offset");
         $query->bindParam('offset', $offset, PDO::PARAM_INT);
         $query->bindParam('limit', $limit, PDO::PARAM_INT);
         $query->execute();
@@ -46,8 +46,8 @@ class PostReadModel
     {
         $id = $row['id'];
         $title = $row['title'];
-        $content = $row['content'];
-        $date = new DateTimeImmutable($row['date']);
+        $content = $row['content_full'];
+        $date = new DateTimeImmutable($row['create_date']);
         return new PostView($id, $date, $title, $content);
     }
 

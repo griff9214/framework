@@ -33,4 +33,5 @@ return [
             ],
         ],
     ],
+    'fixtures_path' => 'db/fixtures'
 ];

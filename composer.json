@@ -11,6 +11,7 @@
   },
   "require-dev": {
     "ext-json": "*",
+    "doctrine/data-fixtures": "^1.4",
     "filp/whoops": "^2.7",
     "fzaninotto/faker": "^1.9",
     "laminas/laminas-coding-standard": "^2.0",

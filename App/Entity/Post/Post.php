@@ -4,9 +4,10 @@
 namespace App\Entity\Post;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Laminas\Stdlib\Exception\DomainException;
-use Monolog\DateTimeImmutable;
+use \DateTimeImmutable;
 
 /**
  * @ORM\Entity
@@ -49,7 +50,7 @@ class Post
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="post", orphanRemoval=true, cascade={"persist"})
      * @ORM\OrderBy({"date" = "ASC"})
      */
-    private ArrayCollection $comments;
+    private Collection $comments;
 
     public function __construct(DateTimeImmutable $date, string $title, Content $content, Meta $meta)
     {
