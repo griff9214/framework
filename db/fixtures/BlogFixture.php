@@ -20,7 +20,7 @@ class BlogFixture extends AbstractFixture
                 DateTimeImmutable::createFromMutable($faker->dateTime),
                 $title = $faker->sentence,
                 new Content($faker->text(100), $faker->paragraphs(5, true)),
-                new Meta($title, $faker->words(6, true), $faker->sentences(3, true))
+                new Meta($title, strtr($faker->words(6, true), " ", ", "), $faker->sentences(3, true))
             );
             for ($a = 0; $a < rand(1, 10); $a++) {
                 $post->addComment(

@@ -1,5 +1,7 @@
 <?php
 
+use App\Console\FixturesCommand;
+use Framework\Container\Factories\Console\FixturesCommandFactory;
 use Framework\Http\Middleware\ErrorHandler\ErrorResponseGenerator\ErrorResponseGeneratorInterface;
 use Framework\Http\Middleware\ErrorHandler\ErrorResponseGenerator\WhoopsErrorResponseGenerator;
 use Laminas\ConfigAggregator\ConfigAggregator;
@@ -12,8 +14,12 @@ return [
                 ErrorResponseGeneratorInterface::class => function (ContainerInterface $c) {
                         return $c->get(WhoopsErrorResponseGenerator::class);
                 },
+                FixturesCommand::class => FixturesCommandFactory::class
             ]
     ],
+    'console_commands' =>[
+            'fixtures:execute' => FixturesCommand::class,
+        ],
     'debug' => true,
     ConfigAggregator::ENABLE_CACHE => true
 ];

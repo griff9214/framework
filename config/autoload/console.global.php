@@ -13,12 +13,10 @@ return [
         'factories' => [
             Application::class => ConsoleApplicationFactory::class,
             ClearCacheCommand::class => ClearCacheCommandFactory::class,
-            FixturesCommand::class => FixturesCommandFactory::class
         ]
     ],
     'console_commands' =>[
         'cache:clear' => ClearCacheCommand::class,
-        'fixtures:execute' => FixturesCommand::class,
         Doctrine\Migrations\Tools\Console\Command\VersionCommand::class,
         Doctrine\Migrations\Tools\Console\Command\DiffCommand::class,
         Doctrine\Migrations\Tools\Console\Command\DumpSchemaCommand::class,
