@@ -1,15 +1,16 @@
 {% extends("layout/default.html.twig") %}
-{% block title %}{{ post.title|escape }}{% endblock %}
+{% block title %}{{ post.Title|escape }}{% endblock %}
 
 {% block meta %}
-    <meta name="description" content="{{ post.title|escape }}"/>
+    <meta name="description" content="{{ post.Meta.Description|escape }}"/>
+    <meta name="keywords" content="{{ post.Meta.Keywords|escape }}"/>
 {% endblock %}
 
 {% block breadcrumbs %}
     <ul class="breadcrumb">
         <li><a href="{{ path('home') }}">Home</a></li>
         <li><a href="{{ path('blog-index') }}">Blog</a></li>
-        <li class="active">{{ post.title|escape }}</li>
+        <li class="active">{{ post.Title|escape }}</li>
     </ul>
 {% endblock %}
 
@@ -19,9 +20,21 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            {{ post.date|date('Y-m-d') }}
+            {{ post.create_date|date('Y-m-d') }}
         </div>
-        <div class="panel-body">{{ post.content|escape }}</div>
+        <div class="panel-body">{{ post.content_full|escape }}</div>
     </div>
 
+    {% if post.comments|length > 0 %}
+        <h2>Comments</h2>
+        {% for comment in post.comments %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="pull-right">{{ comment.date|date('Y-m-d') }}</span>
+                    {{ comment.author }}
+                </div>
+                <div class="panel-body">{{ comment.text|nl2br }}</div>
+            </div>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

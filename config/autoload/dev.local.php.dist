@@ -12,14 +12,30 @@ return [
         'factories' =>
             [
                 ErrorResponseGeneratorInterface::class => function (ContainerInterface $c) {
-                        return $c->get(WhoopsErrorResponseGenerator::class);
+                    return $c->get(WhoopsErrorResponseGenerator::class);
                 },
                 FixturesCommand::class => FixturesCommandFactory::class
             ]
     ],
-    'console_commands' =>[
-            'fixtures:execute' => FixturesCommand::class,
+    'doctrine' => [
+        'configuration' => [
+            'orm_default' => [
+                'result_cache' => 'array',
+                'metadata_cache' => 'array',
+                'query_cache' => 'array',
+                'hydration_cache' => 'array',
+            ],
         ],
+        'driver' => [
+            'entities' => [
+                'cache' => 'array',
+            ],
+        ],
+    ],
+    'console_commands' => [
+        'fixtures:execute' => FixturesCommand::class,
+    ],
     'debug' => true,
     ConfigAggregator::ENABLE_CACHE => true
+
 ];

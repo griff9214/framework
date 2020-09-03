@@ -18,10 +18,10 @@
     {% for post in posts %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                <span class="pull-right">{{ post.date|date("Y-m-d") }}</span>
+                <span class="pull-right">{{ post.create_date|date("Y-m-d") }}, {{ post.comments_count }} comments</span>
                 <a href="{{ path('blog-post', {id : post.id}) }}">{{ post.title|escape }}</a>
             </div>
-            <div class="panel-body">{{ post.content }}</div>
+            <div class="panel-body">{{ post.content_short }}</div>
         </div>
     {% endfor %}
 

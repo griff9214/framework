@@ -3,7 +3,7 @@
 namespace App\Http\Action\Blog;
 
 use App\ReadModel\Pagination;
-use App\ReadModel\PostReadModel;
+use App\ReadModel\PostReadRepository;
 use Framework\Template\TemplateRenderer;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -13,10 +13,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 class IndexAction implements RequestHandlerInterface
 {
     public const PER_PAGE_LIMIT = 10;
-    private PostReadModel $postRepository;
+    private PostReadRepository $postRepository;
     private TemplateRenderer $renderer;
 
-    public function __construct(PostReadModel $postRepository, TemplateRenderer $renderer)
+    public function __construct(PostReadRepository $postRepository, TemplateRenderer $renderer)
     {
         $this->postRepository = $postRepository;
         $this->renderer = $renderer;

@@ -1,22 +1,33 @@
 <?php
 
-use Doctrine\DBAL\Driver\PDOSqlite\Driver;
+use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
+use Framework\Container\Factories\db\PDOFactory;
 use Roave\PsrContainerDoctrine\EntityManagerFactory;
 
 return [
     'dependencies' => [
         'factories' => [
             EntityManagerInterface::class => EntityManagerFactory::class,
+            PDO::class => PDOFactory::class,
         ],
     ],
     'doctrine' => [
+        'configuration' => [
+            'orm_default' => [
+                'result_cache' => 'filesystem',
+                'metadata_cache' => 'filesystem',
+                'query_cache' => 'filesystem',
+                'hydration_cache' => 'filesystem',
+            ]
+        ],
         'connection' => [
             'orm_default' => [
-                'driver_class' => Driver::class,
-                'pdo' => PDO::class,
+                'params' => [
+                    'url' => 'sqlite::db/db.sqlite',
+                ],
             ],
         ],
         'driver' => [
@@ -28,8 +39,14 @@ return [
             ],
             'entities' => [
                 'class' => AnnotationDriver::class,
-                'cache' => 'array',
+                'cache' => 'filesystem',
                 'paths' => ['App/Entity']
+            ],
+        ],
+        'cache' => [
+            'filesystem' => [
+                'class' => FilesystemCache::class,
+                'directory' => 'var/cache/DoctrineCache',
             ],
         ],
     ],
