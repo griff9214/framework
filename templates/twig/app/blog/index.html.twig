@@ -6,22 +6,24 @@
 {% endblock %}
 
 {% block breadcrumbs %}
-    <ul class="breadcrumb">
-        <li><a href="{{ path('home') }}">Home</a></li>
-        <li class="active">Blog</li>
-    </ul>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Blog</li>
+        </ol>
+    </nav>
 {% endblock %}
 
 {% block content %}
 
     <h1>Blog</h1>
     {% for post in posts %}
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <div class="card mb-3">
+            <div class="card-header">
                 <span class="pull-right">{{ post.create_date|date("Y-m-d") }}, {{ post.comments_count }} comments</span>
                 <a href="{{ path('blog-post', {id : post.id}) }}">{{ post.title|escape }}</a>
             </div>
-            <div class="panel-body">{{ post.content_short }}</div>
+            <div class="card-body">{{ post.content_short }}</div>
         </div>
     {% endfor %}
 

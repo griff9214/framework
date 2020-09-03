@@ -7,33 +7,35 @@
 {% endblock %}
 
 {% block breadcrumbs %}
-    <ul class="breadcrumb">
-        <li><a href="{{ path('home') }}">Home</a></li>
-        <li><a href="{{ path('blog-index') }}">Blog</a></li>
-        <li class="active">{{ post.Title|escape }}</li>
-    </ul>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('blog-index') }}">Blog</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ post.title|escape }}</li>
+        </ol>
+    </nav>
 {% endblock %}
 
 {% block content %}
 
     <h1>{{ post.title|escape }}</h1>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
+    <div class="card mb-3">
+        <div class="card-header">
             {{ post.create_date|date('Y-m-d') }}
         </div>
-        <div class="panel-body">{{ post.content_full|escape }}</div>
+        <div class="card-body">{{ post.content_full|escape }}</div>
     </div>
 
     {% if post.comments|length > 0 %}
         <h2>Comments</h2>
         {% for comment in post.comments %}
-            <div class="panel panel-default">
-                <div class="panel-heading">
+            <div class="card mb-3">
+                <div class="card-header">
                     <span class="pull-right">{{ comment.date|date('Y-m-d') }}</span>
                     {{ comment.author }}
                 </div>
-                <div class="panel-body">{{ comment.text|nl2br }}</div>
+                <div class="card-body">{{ comment.text|nl2br }}</div>
             </div>
         {% endfor %}
     {% endif %}
