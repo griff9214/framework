@@ -4,6 +4,7 @@ namespace Framework\Http\Router;
 
 use InvalidArgumentException;
 
+use Psr\Http\Message\ServerRequestInterface;
 use function array_filter;
 use function array_key_exists;
 use function in_array;

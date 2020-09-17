@@ -3,3 +3,6 @@
 .idea
 /vendor/
 vendor
+/public/css/
+/public/js/
+ls

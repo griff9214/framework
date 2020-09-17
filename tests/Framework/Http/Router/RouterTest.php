@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Http;
+namespace Tests\Framework\Http;
 
 use Framework\Http\Router\Exceptions\RequestNotMatchedException;
 use Framework\Http\Router\Router;

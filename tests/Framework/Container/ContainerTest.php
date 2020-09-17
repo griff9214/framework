@@ -1,7 +1,8 @@
 <?php
 
-namespace Framework\Container;
+namespace Tests\Framework\Container;
 
+use Framework\Container\Container;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

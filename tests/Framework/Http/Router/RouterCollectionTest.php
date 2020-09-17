@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Http;
+namespace Tests\Framework\Http;
 
 use Framework\Http\Router\RouterCollection;
 use PHPUnit\Framework\TestCase;

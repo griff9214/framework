@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Pipeline;
+namespace Tests\Framework\Pipeline;
 
 use Framework\Http\Pipeline\MiddlewareResolver;
 use Laminas\Diactoros\Response;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\ErrorHandler;
+namespace Tests\Framework\ErrorHandler;
 
 use Exception;
 use Framework\Http\Middleware\ErrorHandler\ErrorHandlerMiddleware;
